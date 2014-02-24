@@ -8,12 +8,30 @@ namespace Shmipl.GameScene
 	public class AuctionPlayerInformationController : UIController {
 		
 		public override void UpdateView() {
+			Player_UpdateView();
 			Income_UpdateView();
 			Priests_UpdateView();
 			Philosophers_UpdateView();
 		}
 		
-		/* Gold */
+		/* Income */
+		public UILabel playerSign;
+		private long player;
+		public long Player {
+			get { return player; }
+			set {
+				if (player != value) {
+					player = value;
+					Player_UpdateView();
+				}
+			}
+		}
+		
+		public void Player_UpdateView() {
+			playerSign.text = "" + player;
+		}
+
+		/* Income */
 		public UILabel incomeView;
 		private long income;
 		public long Income {
