@@ -7,7 +7,7 @@ using Shmipl.Unity;
 namespace Shmipl.GameScene
 {
 	public class AuctionGods : UICollectionController {
-		//public UIController AppolonWidget;
+		public UIController AppolonWidget;
 		private int activeGodIndex = -1;
 		private int activeBet = 0;
 
@@ -31,10 +31,23 @@ namespace Shmipl.GameScene
 					}
 				}
 			});	
+
+			AppolonWidget.UpdateView();
+		}
+
+
+		private void ConfirmBet(string god, long bet) {
+			Debug.Log("Player made bet " + bet + " on god " + god);
+			ResetActiveGod();
+			UpdateView();
+		}
+
+		public void ConfirmAppoloBet(int bet) {
+			ConfirmBet(Constants.godAppolon, (long)bet);
 		}
 
 		public void ConfirmActiveGodBet(int index) {
-			Debug.Log("Player made bet " + GetChild<GodPanel>(index).Bet + " on god " + GetChild<GodPanel>(index).God);
+			ConfirmBet(GetChild<GodPanel>(index).God, GetChild<GodPanel>(index).Bet);
 		}
 
 		public void ChangeBet(int index, int change) {
@@ -44,6 +57,11 @@ namespace Shmipl.GameScene
 			}
 			activeBet += change;
 			UpdateView();
+		}
+
+		public void ResetActiveGod() {
+			activeGodIndex = -1;
+			activeBet = 0;
 		}
 	}
 }
