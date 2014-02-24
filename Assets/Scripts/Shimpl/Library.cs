@@ -7,12 +7,40 @@ using Shmipl.Base;
 
 namespace Cyclades.Game
 {
+	public enum Phase {
+		AuctionPhase,
+		TurnPhase,
+		SubPhase
+	}
+
 	public static class Library
 	{
 		#region Реализация
 
+		#region Вспомогательные
+		public static Phase GetPhase(IContextGet r) {
+			string cur_state = r.GetStr("/cur_state");
+
+			if (cur_state.StartsWith("Auction"))
+				return Phase.AuctionPhase;
+			else if (cur_state.StartsWith("Turn"))
+				return Phase.TurnPhase;
+
+			return Phase.SubPhase;
+		}
+
+		public static long GetCurrentPlayer(IContextGet r) {
+			if (GetPhase(r) == Phase.AuctionPhase)
+				return r.GetLong("/auction/current_player");
+			else if (GetPhase(r) == Phase.TurnPhase)
+				return r.GetLong("/turn/current_player");
+
+			return -1;
+		}
+		#endregion
+
 		#region Аукцион
- 		/*возвращает реальную цену ставки для игрока с учетом количества жрецов*/
+		/*возвращает реальную цену ставки для игрока с учетом количества жрецов*/
 		public static long Auction_GoldForBet(IContextGet r, long bet, long player) {
 			return Math.Max (bet - r.GetLong ("/markers/priest/[{0}]", player), 1L);
 		}
@@ -347,9 +375,8 @@ namespace Cyclades.Game
 			
 			var neibours = from ship_number in Range(ship_owners)
 						   where ship_owners[ship_number] == player
-								&& (long)((List<object>)ship_coords[ship_number])[0] == x
-								&& (long)((List<object>)ship_coords[ship_number])[1] == y
-			               select new { X = (long)((List<object>)ship_coords[ship_number])[0] , Y = (long)((List<object>)ship_coords[ship_number])[1] };
+								&& Map_IsPointsNeibours(r, x, y, (long)((List<object>)ship_coords[ship_number])[0], (long)((List<object>)ship_coords[ship_number])[1])
+						   select new { X = (long)((List<object>)ship_coords[ship_number])[0], Y = (long)((List<object>)ship_coords[ship_number])[1] };
 			
 			foreach (var neibour in neibours) {
 				if (Map_IsIslandNeibourToPoint (r, island, neibour.X, neibour.Y))
@@ -364,6 +391,17 @@ namespace Cyclades.Game
 
 		#region Бой
 
+		#endregion
+
+		#region Карты
+		/*возвращает реальную цену ставки для игрока с учетом количества жрецов*/
+		public static long Card_GoldForSlot(IContextGet r, long slot, long player) {
+			long temle_count = 0;
+			List<int> islands = Map_GetIslandsByOwner(r, player);
+			foreach(int island in islands)
+				temle_count += Map_GetBuildCountAtIsland(r, (long)island, Constants.buildTemple);
+			return Math.Max(Constants.cardPrice[(int)slot] - temle_count, 1L);
+		}
 		#endregion
 
 		#endregion
