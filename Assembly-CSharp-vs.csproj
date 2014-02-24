@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{3D74ADEC-F042-B996-0727-6B3C27AAC518}</ProjectGuid>
+	<ProjectGuid>{B626F694-0B86-231E-210A-BD328FFBA9E1}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -39,10 +39,10 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>D:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>D:/PF/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>D:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>D:/PF/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -184,8 +184,6 @@
      <Compile Include="Assets\Scripts\UI\GameScene\Controllers\AuctionPlayerInformationPanelController.cs" />
      <Compile Include="Assets\Scripts\UI\GameScene\Controllers\GodPanel.cs" />
      <Compile Include="Assets\Scripts\test\AddControl.cs" />
-     <Compile Include="Assets\Scripts\test\AppolonCollectionController.cs" />
-     <Compile Include="Assets\Scripts\test\Appoloncontroller.cs" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI\ReadMe - 3.4.9.txt" />
      <None Include="Assets\NGUI\Examples\Models\Orc\Orc Skin.shader" />
