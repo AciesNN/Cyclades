@@ -26,9 +26,7 @@ namespace Shmipl.GameScene
 					ch.Player = player;
 					//TODO надо выводить картинку игрока
 
-					if (player == Library.GetCurrentPlayer(data.context)) {
-						//TODO тут надо отметить текущего
-					}
+					ch.ActivePlayer = (Library.GetCurrentPlayer(data.context) == player);
 				}
 			});
 		}

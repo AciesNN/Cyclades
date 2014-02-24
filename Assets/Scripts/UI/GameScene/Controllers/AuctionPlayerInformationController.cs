@@ -9,12 +9,13 @@ namespace Shmipl.GameScene
 		
 		public override void UpdateView() {
 			Player_UpdateView();
+			ActivePlayer_UpdateView();
 			Income_UpdateView();
 			Priests_UpdateView();
 			Philosophers_UpdateView();
 		}
-		
-		/* Income */
+
+		/* Player */
 		public UILabel playerSign;
 		private long player;
 		public long Player {
@@ -29,6 +30,23 @@ namespace Shmipl.GameScene
 		
 		public void Player_UpdateView() {
 			playerSign.text = "" + player;
+		}
+
+		/* Active player */
+		public UISprite playerSprite;
+		private bool activePlayer;
+		public bool ActivePlayer {
+			get { return activePlayer; }
+			set {
+				if (activePlayer != value) {
+					activePlayer = value;
+					ActivePlayer_UpdateView();
+				}
+			}
+		}
+		
+		public void ActivePlayer_UpdateView() {
+			playerSprite.color = (activePlayer ? Color.green : Color.white);
 		}
 
 		/* Income */
