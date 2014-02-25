@@ -23,7 +23,7 @@ namespace Shmipl.Unity
 
 		public void RegisterChilds() {
 			ForEachChild<UIController>(
-				(i, ch) => { ch.RegisterParent(this, i); });
+				(i, ch) => { if (ch) ch.RegisterParent(this, i); });
 		}
 
 		public void Childrens_UpdateView() {

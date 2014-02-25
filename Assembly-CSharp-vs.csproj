@@ -180,6 +180,7 @@
      <Compile Include="Assets\Scripts\UI\GameScene\Admin\data.cs" />
      <Compile Include="Assets\Scripts\UI\GameScene\Controllers\AppolonAuctionController.cs" />
      <Compile Include="Assets\Scripts\UI\GameScene\Controllers\AuctionGods.cs" />
+     <Compile Include="Assets\Scripts\UI\GameScene\Controllers\AuctionPanelController.cs" />
      <Compile Include="Assets\Scripts\UI\GameScene\Controllers\AuctionPlayerInformationController.cs" />
      <Compile Include="Assets\Scripts\UI\GameScene\Controllers\AuctionPlayerInformationPanelController.cs" />
      <Compile Include="Assets\Scripts\UI\GameScene\Controllers\GodPanel.cs" />
