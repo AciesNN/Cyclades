@@ -1,2 +1,8 @@
 /Library
 /*.userprefs
+/Assembly-CSharp.csproj
+/Assembly-CSharp-Editor.csproj
+/Assembly-CSharp-Editor-vs.csproj
+/Assembly-CSharp-vs.csproj
+/Cyclades.sln
+/Cyclades-csharp.sln
