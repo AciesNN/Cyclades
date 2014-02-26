@@ -29,13 +29,15 @@ namespace Shmipl.GameScene
 						else
 							ch.Bet = 0;
 					}
+
+					ch.MinBet = 0;
+					ch.MaxBet = 10;
 				}
 			});	
 
 			AppolonWidget.UpdateView();
 		}
-
-
+		
 		private void ConfirmBet(string god, long bet) {
 			Debug.Log("Player made bet " + bet + " on god " + god);
 			ResetActiveGod();

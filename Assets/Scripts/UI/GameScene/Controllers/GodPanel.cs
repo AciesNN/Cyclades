@@ -13,6 +13,40 @@ namespace Shmipl.GameScene
 			Bet_UpdateView();
 		}
 		
+		/* max bet */
+		public UIButton increaseButton;
+		private long maxBet;
+		public long MaxBet {
+			get { return maxBet; }
+			set {
+				if (maxBet != value) {
+					maxBet = value;
+					MaxBet_UpdateView();
+				}
+			}
+		}
+		
+		public void MaxBet_UpdateView() {
+			increaseButton.isEnabled = (Bet < MaxBet);
+		}
+		
+		/* min bet */
+		public UIButton discreaseButton;
+		private long minBet;
+		public long MinBet {
+			get { return minBet; }
+			set {
+				if (minBet != value) {
+					minBet = value;
+					MinBet_UpdateView();
+				}
+			}
+		}
+		
+		public void MinBet_UpdateView() {
+			discreaseButton.isEnabled = (Bet > MinBet);
+		}
+
 		/* God */
 		public UILabel godView;
 		private string god;
@@ -62,6 +96,8 @@ namespace Shmipl.GameScene
 		
 		public void Bet_UpdateView() {
 			betView.text = "" + bet;
+			MinBet_UpdateView();
+			MaxBet_UpdateView();
 		}
 
 		/*события*/

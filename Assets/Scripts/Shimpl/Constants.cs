@@ -26,9 +26,13 @@ namespace  Cyclades.Game
 		public static readonly List<long> priestPrice = new List<long>() {0, 4};
 		public static readonly List<long> philosopherPrice = new List<long>() {0, 4};
 		public static readonly long philosophToMetro = 4;
-		public static readonly long buildingCost = 2;
+        public static readonly long buildingsToMetro = 4; 
+        public static readonly long buildingCost = 2;
 		public static readonly long moveArmyCost = 1;
 		public static readonly long moveNavyCost = 1;
+		public static readonly long changeCardCost = 1;
+        public static readonly long sellCost = 2;
+
 
 		//3. стартовые количества
 		public static readonly long startGold = 5;
@@ -42,10 +46,11 @@ namespace  Cyclades.Game
 
 		public static readonly List<string> buildings = new List<string>() {buildTemple, buildUniver, buildFortres, buildMarina};
 
-		//5. армия и флот (ну и карты)
+		//5. армия и флот
 		public static readonly long maxArmyCount = 8;
 		public static readonly long maxNavyCount = 8;
 		public static readonly long maxNavyMove = 3;
+        public static readonly long minotaurForce = 2;
 
 		//6. карты
 		public static readonly string cardNone = "";
@@ -90,14 +95,12 @@ namespace  Cyclades.Game
 
 		//7. кубик боя
 		public static readonly List<long> dice = new List<long>() { 0, 1, 1, 2, 2, 3 };
+			
+		//8. Доходы на Апполоне
+		public static readonly long apolloSmallIncome = 1L;
+		public static readonly long apolloBigIncome = 4L;
 
 
-		/*static Constants()
-		{
-			//TODO 
-			if (cards.Count != cards.Distinct().Count())
-				throw new Exception("с набором карт что-то не так");
-		}*/
 	}
 }
 
