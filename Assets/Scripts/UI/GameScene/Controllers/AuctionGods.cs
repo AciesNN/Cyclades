@@ -31,15 +31,15 @@ namespace Shmipl.GameScene
 							ch.Bet = 0;
 					}
 				
-					ch.DisableBet = (god == Library.Auction_GetCurrentGodBetForPlayer(data.context, data.cur_player));
+					ch.DisableBet = (god == Library.Auction_GetCurrentGodBetForPlayer(data.context, Client.cur_player));
 					if (!ch.DisableBet) {
 						if (ch.Player >= 0)
 							ch.MinBet = data.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
 						else 
 							ch.MinBet = 0;
 
-						if (data.context.GetLong("/markers/gold/[{0}]", data.cur_player) > 0)
-							ch.MaxBet = data.context.GetLong("/markers/gold/[{0}]", data.cur_player) + data.context.GetLong("/markers/priest/[{0}]", data.cur_player);
+						if (data.context.GetLong("/markers/gold/[{0}]", Client.cur_player) > 0)
+							ch.MaxBet = data.context.GetLong("/markers/gold/[{0}]", Client.cur_player) + data.context.GetLong("/markers/priest/[{0}]", Client.cur_player);
 						else
 							ch.MaxBet = 0;
 					}
@@ -50,7 +50,8 @@ namespace Shmipl.GameScene
 		}
 		
 		private void ConfirmBet(string god, long bet) {
-			Debug.Log("Player made bet " + bet + " on god " + god);
+			Hashtable msg = Client.MakeBet(bet, god);
+			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
 			ResetActiveGod();
 			UpdateView();
 		}

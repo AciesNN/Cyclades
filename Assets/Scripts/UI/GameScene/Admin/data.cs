@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public static class data {
 	public static Shmipl.Base.Context context = new Shmipl.Base.Context();
-	public static long cur_player = 0;
 
 	static data()	{
 		LoadData("1");
