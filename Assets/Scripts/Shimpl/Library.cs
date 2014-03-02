@@ -30,6 +30,12 @@ namespace Cyclades.Game
 		}
 
 		public static long GetCurrentPlayer(IContextGet r) {
+			//TODO некрасивый хардкод, по идее бы код никак не должен опираться на структуру FSM
+			if (r.GetStr("/cur_state") == "Turn.Fight.ArmyWaitDeffender")
+				return r.GetLong("/fight/army/deffender/player");
+			if (r.GetStr("/cur_state") == "Turn.Fight.NavyWaitDeffender")
+				return r.GetLong("/fight/navy/deffender/player");
+
 			if (GetPhase(r) == Phase.AuctionPhase)
 				return r.GetLong("/auction/current_player");
 			else if (GetPhase(r) == Phase.TurnPhase)
@@ -184,8 +190,8 @@ namespace Cyclades.Game
 		public static List<int> Map_GetNeiborIslandsByMapPos(IContextGet r, long x, long y) {
 			List<object> neibours = Map_GetPointNeighbors(r, x, y);
 			List<int> islands = new List<int> ();
-			foreach (List<object> neibour in neibours) {
-				int island = Map_GetIslandByPoint (r, (long)neibour[0], (long)neibour[1]);
+			foreach (List<long> neibour in neibours) {
+				int island = Map_GetIslandByPoint (r, neibour[0], neibour[1]);
 				if (island != -1 && islands.IndexOf (island) == -1)
 					islands.Add (island);
 			}
@@ -214,7 +220,6 @@ namespace Cyclades.Game
 			return res;
 		}
 
-		/*
 		/*определяет, принадлежит ли точка карте*/
 		public static bool Map_IsPointOnMap(IContextGet r, long x, long y) 	{
 
@@ -344,7 +349,7 @@ namespace Cyclades.Game
 		
 		private static void _Map_AddPointNeighbors(IContextGet r, long x, long y, List<object> l) {
 			if (Map_IsPointOnMap(r, x, y))
-				l.Add(new List<object>(){ x, y });				
+				l.Add(new List<long>(){ x, y });				
 		}
 		
 		/*пытается определить - есть ли путь через свои корабли до следующего острова*/
@@ -387,7 +392,50 @@ namespace Cyclades.Game
 			
 			return false;
 		}
-		#endregion
+		
+        /*определяет, на какие острова может добраться плеер с острова по кораблям*/
+        public static List<long> Map_GetBridgetIslands(IContextGet r, long island, long player) {
+            //TODO надо бы оптимизировать, а то адский перебор получается
+            List<long> res = new List<long>();
+            int islandsCount = r.GetList ("/map/islands/owners").Count;
+            for (int i = 0; i < islandsCount; ++i) {
+                if (i != island && Map_HasIslandsShipBrige(r, island, (long)i, player))
+                    res.Add((long)i);
+            }
+            return res;
+        }
+
+        /*есть ли у игрока пути побега с острова*/
+        public static bool Map_CanPlayerRetreatFromIsland(IContextGet r, long island, long player) {
+            List<long> islands = Map_GetBridgetIslands(r, island, player);
+			List<long> owners = r.GetList<long> ("/map/islands/owners");
+            foreach(long to_island in islands) {
+                if (owners[(int)to_island] == player || owners[(int)to_island] == -1)
+                    return true;
+            }
+            return false;
+        }
+
+        /*определяет, могут ли корабли игрока помещены в точку с координатами*/
+        public static bool Map_IsPointAccessibleForShip(IContextGet r, long x, long y, long player) {
+            if (!Library.Map_IsPointOnMap(r, x, y))
+                return false;
+            
+            //TODO - кракены, корабли противника, острова и т.д. и т.д.
+
+            return true; //все что не запрещено - разрешено
+        }
+
+        /**/
+        public static bool Map_CanPlayerRetreatFromSea(IContextGet r, long x, long y, long player) {
+            List<object> points = Map_GetPointNeighbors(r, x, y);
+            foreach (List<long> coords in points) {
+                if (Map_IsPointAccessibleForShip(r, coords[0], coords[1], player))
+                    return true;
+            }
+            return false;
+        }
+        #endregion
 
 		#region Бой
 

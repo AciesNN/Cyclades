@@ -15,23 +15,34 @@ namespace Shmipl.GameScene
 		{
 			long random_gods_number = data.context.Get<long> ("/players_number") - 1;
 			
-			ForEachChild<GodPanel> ((i, ch) => {
-				ch.gameObject.SetActive (i < random_gods_number); 
+			ForEachChild<GodPanel> ((god, ch) => {
+				ch.gameObject.SetActive (god < random_gods_number); 
 
-				if (i < random_gods_number) {
-					ch.God = data.context.Get<string>("/auction/gods_order/[{0}]", i);
-					ch.Player = Library.Aiction_GetCurrentBetPlayerForGod(data.context, i);
-					if (i == activeGodIndex) {
+				if (god < random_gods_number) {
+
+					ch.God = data.context.Get<string>("/auction/gods_order/[{0}]", god);
+					ch.Player = Library.Aiction_GetCurrentBetPlayerForGod(data.context, god);
+					if (god == activeGodIndex) {
 						ch.Bet = activeBet;
 					} else {
-						if(ch.Player >= 0 )
-							ch.Bet = data.context.GetLong("/auction/bets/[{0}]/[{1}]", i, ch.Player);
+						if(ch.Player >= 0)
+							ch.Bet = data.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
 						else
 							ch.Bet = 0;
 					}
+				
+					ch.DisableBet = (god == Library.Auction_GetCurrentGodBetForPlayer(data.context, data.cur_player));
+					if (!ch.DisableBet) {
+						if (ch.Player >= 0)
+							ch.MinBet = data.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
+						else 
+							ch.MinBet = 0;
 
-					ch.MinBet = 0;
-					ch.MaxBet = 10;
+						if (data.context.GetLong("/markers/gold/[{0}]", data.cur_player) > 0)
+							ch.MaxBet = data.context.GetLong("/markers/gold/[{0}]", data.cur_player) + data.context.GetLong("/markers/priest/[{0}]", data.cur_player);
+						else
+							ch.MaxBet = 0;
+					}
 				}
 			});	
 
