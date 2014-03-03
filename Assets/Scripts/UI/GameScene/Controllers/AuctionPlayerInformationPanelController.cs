@@ -24,7 +24,6 @@ namespace Shmipl.GameScene
 					ch.Philosophers = data.context.GetLong ("/markers/philosopher/[{0}]", player);
 
 					ch.Player = player;
-					//TODO надо выводить картинку игрока
 
 					ch.ActivePlayer = (Library.GetCurrentPlayer(data.context) == player);
 				}

@@ -5,7 +5,7 @@ using Shmipl.Unity;
 
 public class AdminPanel : MonoBehaviour {
 	public UIInput fileName;
-	public UISprite[] buttonsSprites;
+	public UIButton[] buttons;
 
 	void UpdateView() {
 		GetComponent<UICollectionController>().UpdateView();
@@ -19,7 +19,7 @@ public class AdminPanel : MonoBehaviour {
 	void SetCurPlayer(long p) {
 		Cyclades.Game.Client.cur_player = p; 
 		for (int i = 0; i < buttonsSprites.Length; ++i) {
-			buttonsSprites[i].color = (i == (int)p ? Color.green : Color.white);
+			buttons[i].defaultColor = (i == (int)p ? Color.green : Color.red);
 		}
 		UpdateView();
 	}
