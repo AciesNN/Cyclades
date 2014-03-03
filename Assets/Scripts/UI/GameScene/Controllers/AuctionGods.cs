@@ -7,7 +7,7 @@ using Shmipl.Unity;
 namespace Shmipl.GameScene
 {
 	public class AuctionGods : UICollectionController {
-		public UIController AppolonWidget;
+		public AppolonAuctionController AppolonWidget;
 		private int activeGodIndex = -1;
 		private int activeBet = 0;
 
@@ -20,6 +20,8 @@ namespace Shmipl.GameScene
 
 				if (god < random_gods_number) {
 
+					ch.EnableBet = Client.cur_player != -1 && (god != Library.Auction_GetCurrentGodBetForPlayer(data.context, Client.cur_player)) && (Client.cur_player == Library.GetCurrentPlayer(data.context));
+
 					ch.God = data.context.Get<string>("/auction/gods_order/[{0}]", god);
 					ch.Player = Library.Aiction_GetCurrentBetPlayerForGod(data.context, god);
 					if (god == activeGodIndex) {
@@ -31,8 +33,7 @@ namespace Shmipl.GameScene
 							ch.Bet = 0;
 					}
 				
-					ch.DisableBet = (god == Library.Auction_GetCurrentGodBetForPlayer(data.context, Client.cur_player));
-					if (!ch.DisableBet) {
+					if (ch.EnableBet) {
 						if (ch.Player >= 0)
 							ch.MinBet = data.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
 						else 
@@ -46,6 +47,7 @@ namespace Shmipl.GameScene
 				}
 			});	
 
+			AppolonWidget.EnableBet = (Client.cur_player == Library.GetCurrentPlayer(data.context));
 			AppolonWidget.UpdateView();
 		}
 		

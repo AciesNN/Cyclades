@@ -3,7 +3,7 @@ using System.Collections;
 
 using Shmipl.Unity;
 
-public class LoadData : MonoBehaviour {
+public class AdminPanel : MonoBehaviour {
 	public UIInput fileName;
 	public UISprite[] buttonsSprites;
 

@@ -11,26 +11,25 @@ namespace Shmipl.GameScene
 		public UIButton discreaseButton;
 
 		public override void UpdateView() {
-			DisableBet_UpdateView();
 			God_UpdateView();
 			Player_UpdateView();
 			Bet_UpdateView();
 		}
-		
-		/* disable bet */
-		private bool disableBet = false;
-		public bool DisableBet {
-			get { return disableBet; }
+
+		/* enable bet */
+		private bool enableBet = true;
+		public bool EnableBet {
+			get { return enableBet; }
 			set {
-				if (disableBet != value) {
-					disableBet = value;
-					DisableBet_UpdateView();
+				if (enableBet != value) {
+					enableBet = value;
+					Bet_UpdateView();
 				}
 			}
 		}
 		
-		public void DisableBet_UpdateView() {
-			okButton.isEnabled = !disableBet;
+		public void EnableBet_UpdateView() {
+			okButton.isEnabled = enableBet;
 		}
 
 		/* max bet */
@@ -46,7 +45,7 @@ namespace Shmipl.GameScene
 		}
 		
 		public void MaxBet_UpdateView() {
-			increaseButton.isEnabled = (Bet < MaxBet) && !disableBet;
+			increaseButton.isEnabled = (Bet < MaxBet) && enableBet;
 		}
 		
 		/* min bet */
@@ -62,7 +61,7 @@ namespace Shmipl.GameScene
 		}
 		
 		public void MinBet_UpdateView() {
-			discreaseButton.isEnabled = (Bet > MinBet) && !disableBet;
+			discreaseButton.isEnabled = (Bet > MinBet) && enableBet;
 		}
 
 		/* God */
@@ -116,6 +115,7 @@ namespace Shmipl.GameScene
 			betView.text = "" + bet;
 			MinBet_UpdateView();
 			MaxBet_UpdateView();
+			EnableBet_UpdateView();
 		}
 
 		/*события*/

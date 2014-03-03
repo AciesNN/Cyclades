@@ -10,8 +10,28 @@ namespace Shmipl.GameScene
 	public class AppolonAuctionController : UIController {
 		public UILabel godLabel;
 		public UILabel[] bets;
+		public UIButton okButton;
+
+		/* enable bet */
+		private bool enableBet = true;
+		public bool EnableBet {
+			get { return enableBet; }
+			set {
+				if (enableBet != value) {
+					enableBet = value;
+					EnableBet_UpdateView();
+				}
+			}
+		}
+		
+		public void EnableBet_UpdateView() {
+			okButton.isEnabled = enableBet;
+		}
+
 
 		public override void UpdateView () {
+			EnableBet_UpdateView();
+
 			long appolo_god_number = data.context.Get<long> ("/players_number") - 1;
 
 			List<int> appoloBets = Library.Auction_GetAllOrderBetPlayersForGod(data.context, appolo_god_number);
