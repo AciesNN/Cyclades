@@ -18,8 +18,9 @@ public class AdminPanel : MonoBehaviour {
 
 	void SetCurPlayer(long p) {
 		Cyclades.Game.Client.cur_player = p; 
-		for (int i = 0; i < buttonsSprites.Length; ++i) {
+		for (int i = 0; i < buttons.Length; ++i) {
 			buttons[i].defaultColor = (i == (int)p ? Color.green : Color.red);
+			buttons[i].UpdateColor(true, true);
 		}
 		UpdateView();
 	}
