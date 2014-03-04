@@ -25,14 +25,10 @@ namespace Shmipl.GameScene
 				cards_labels[index].text = open_cards[index];
 			}
 
-			/*if (Client.cur_player != Library.GetCurrentPlayer(data.context))
+			if (open_cards.Count <= index || open_cards[index] == Constants.cardNone)
 				cards[index].isEnabled = false;
-			else*/ if (open_cards.Count <= index)
-				cards[index].isEnabled = false;	
-			else if (open_cards[index] == Constants.cardNone)
-				cards[index].isEnabled = false;
-
-			cards[index].isEnabled = true;
+			else
+				cards[index].isEnabled = true;
 		}
 
 		void OpenCards_UpdateView () {
@@ -43,7 +39,8 @@ namespace Shmipl.GameScene
 
 		public override void UpdateView () {
 			OpenCards_UpdateView();
-			isEnable = (Client.cur_player == Library.GetCurrentPlayer(data.context));
+			if (Client.cur_player != Library.GetCurrentPlayer(data.context))
+				isEnable = false;
 		}
 		
 		public void BuyCard(long card) {
