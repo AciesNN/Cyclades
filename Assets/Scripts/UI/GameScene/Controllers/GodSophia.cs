@@ -9,7 +9,7 @@ namespace Shmipl.GameScene
 	public class GodSophia : UIController {
 
 		public override void UpdateView () {
-
+			isEnable = (Client.cur_player == Library.GetCurrentPlayer(data.context));
 		}
 
 		public void BuyPhilosopher() {

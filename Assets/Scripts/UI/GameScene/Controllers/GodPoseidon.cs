@@ -9,7 +9,7 @@ namespace Shmipl.GameScene
 	public class GodPoseidon : UIController {
 		
 		public override void UpdateView () {
-			
+			isEnable = (Client.cur_player == Library.GetCurrentPlayer(data.context));			
 		}
 
 		void BuyNavy() {
