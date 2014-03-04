@@ -9,14 +9,14 @@ namespace Shmipl.Unity
 
 		public UIButton[] buttons;
 
-		private bool _isEnable = true;
-		public bool isEnable 
+		private bool _isEnabled = true;
+		public bool isEnabled 
 		{
-			get { return _isEnable; }
+			get { return _isEnabled; }
 			set { 
-				_isEnable = value;
+				_isEnabled = value;
 				foreach(UIButton b in buttons) {
-					b.isEnabled = _isEnable;
+					b.isEnabled = _isEnabled;
 				}
 			}
 		}

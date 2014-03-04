@@ -40,7 +40,9 @@ namespace Shmipl.GameScene
 		public override void UpdateView () {
 			OpenCards_UpdateView();
 			if (Client.cur_player != Library.GetCurrentPlayer(data.context))
-				isEnable = false;
+				isEnabled = false;
+			if (Library.GetPhase(data.context) != Phase.TurnPhase)
+				isEnabled = false;
 		}
 		
 		public void BuyCard(long card) {

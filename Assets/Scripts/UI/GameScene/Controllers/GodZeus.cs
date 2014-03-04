@@ -11,7 +11,7 @@ namespace Shmipl.GameScene
 		public CardPanelController cardPanelController; //ссылка нужна для того, чтобы предупреждать о смене режима выбора карт
 
 		public override void UpdateView () {
-			isEnable = (Client.cur_player == Library.GetCurrentPlayer(data.context));
+			isEnabled = (Client.cur_player == Library.GetCurrentPlayer(data.context));
 		}
 		
 		void BuyPriest() {
