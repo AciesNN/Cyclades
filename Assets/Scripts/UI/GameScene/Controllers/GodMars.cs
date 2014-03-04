@@ -6,17 +6,20 @@ using Shmipl.Unity;
 
 namespace Shmipl.GameScene
 {
-	public class GodSophia : UIController {
-
+	public class GodMars : UIController {
+		
 		public override void UpdateView () {
-
+			
 		}
-
-		public void BuyPhilosopher() {
-			Hashtable msg = Client.BuyPhilosopher();
-			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
+		
+		void BuyArmy() {
+			//TODO
 		}
-
+		
+		void MoveArmy() {
+			//TODO
+		}
+		
 		void BuyBuild() {
 			//TODO
 		}

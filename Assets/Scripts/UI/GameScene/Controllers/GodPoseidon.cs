@@ -6,15 +6,18 @@ using Shmipl.Unity;
 
 namespace Shmipl.GameScene
 {
-	public class GodSophia : UIController {
-
+	public class GodPoseidon : UIController {
+		
 		public override void UpdateView () {
-
+			
 		}
 
-		public void BuyPhilosopher() {
-			Hashtable msg = Client.BuyPhilosopher();
-			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
+		void BuyNavy() {
+			//TODO
+		}
+
+		void StartMoveNavy() {
+			//TODO
 		}
 
 		void BuyBuild() {

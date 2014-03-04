@@ -22,5 +22,9 @@ namespace Shmipl.GameScene
 		void ChangeCard() {
 			cardPanelController.ChangeCard();
 		}
+
+		void BuyBuild() {
+			//TODO
+		}
 	}
 }
