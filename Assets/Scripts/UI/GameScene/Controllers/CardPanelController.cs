@@ -7,7 +7,13 @@ using Shmipl.Unity;
 
 namespace Shmipl.GameScene
 {
+	enum CardPanelController_CardChoose_Mode {
+		Buy,
+		Change
+	}
+
 	public class CardPanelController : UIController {
+		CardPanelController_CardChoose_Mode card_choose_mode = CardPanelController_CardChoose_Mode.Buy;
 
 		public UIButton[] cards;
 		public UILabel[] cards_labels;
@@ -40,7 +46,13 @@ namespace Shmipl.GameScene
 		}
 		
 		public void BuyCard(long card) {
-			Hashtable msg = Client.BuyCard(card);
+			Hashtable msg;
+			if (card_choose_mode == CardPanelController_CardChoose_Mode.Change) {
+				msg = Client.ChangeCard(card);
+				card_choose_mode = CardPanelController_CardChoose_Mode.Buy;
+			} else {
+				msg = Client.BuyCard(card);
+			}
 			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
 		}
 
@@ -55,6 +67,10 @@ namespace Shmipl.GameScene
 
 		void BuyCard2() {
 			BuyCard(2);
+		}
+
+		public void ChangeCard() {
+			card_choose_mode = (card_choose_mode == CardPanelController_CardChoose_Mode.Change ? CardPanelController_CardChoose_Mode.Buy : CardPanelController_CardChoose_Mode.Change);
 		}
 	}
 }
