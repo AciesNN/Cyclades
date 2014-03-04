@@ -9,7 +9,7 @@ namespace Shmipl.GameScene
 	public class GodApollo : UIController {
 
 		public override void UpdateView () {
-			isEnable = (Client.cur_player != Library.GetCurrentPlayer(data.context));
+			isEnable = (Client.cur_player == Library.GetCurrentPlayer(data.context));
 		}
 		
 		void PlaceApollo() {
