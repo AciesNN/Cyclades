@@ -7,6 +7,11 @@ public class AdminPanel : MonoBehaviour {
 	public UIInput fileName;
 	public UIButton[] buttons;
 
+	void Start() {
+		//TODO это не должно быть тут
+		Application.LoadLevelAdditive("Map");
+	}
+
 	void UpdateView() {
 		GetComponent<UICollectionController>().UpdateView();
 	}
