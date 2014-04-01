@@ -26,7 +26,7 @@ public class GridController : MonoBehaviour {
 			cell_size = Vector2.Scale(new Vector2(realTextureSize.x / 2f, realTextureSize.y), texture_scale);
 		} else {
 			realTextureSize = new Vector2(gameObject.renderer.material.mainTexture.width, gameObject.renderer.material.mainTexture.height);
-			cell_size = Vector2.Scale(new Vector2(realTextureSize.x , realTextureSize.y), texture_scale);
+			cell_size = Vector2.Scale(new Vector2(realTextureSize.x, realTextureSize.y), texture_scale);
 		}
 
 		float localScaleX = cell_size.x * cells_count.x;
@@ -94,7 +94,8 @@ public class GridController : MonoBehaviour {
 
 	public Vector2 WorldPositionToCell(Vector3 pos) {
 				
-		Vector3 local_grid_pos = pos - transform.root.position;
+		Vector3 root_pos = new Vector3(transform.position.x - transform.localScale.x/2f, 0f, transform.position.y - transform.localScale.y/2f);
+		Vector3 local_grid_pos = pos - root_pos/*transform.root.position*/;
 		Vector2 grid_pos = new Vector2(local_grid_pos.x / transform.localScale.x, local_grid_pos.z / transform.localScale.y);
 		
 		Vector2 cell = Vector2.Scale(cells_count, grid_pos);
@@ -118,8 +119,9 @@ public class GridController : MonoBehaviour {
 		
 		Vector2 norm_cell = new Vector2(normCellX, normCellY);
 		Vector2 cell_pos = Vector2.Scale(norm_cell, cell_size);
-		
-		Vector3 pos = transform.root.position + new Vector3(cell_pos.x, 0f, cell_pos.y);
+
+		Vector3 root_pos = new Vector3(transform.position.x - transform.localScale.x/2f, 0f, transform.position.y - transform.localScale.y/2f);
+		Vector3 pos = /*transform.root.position*/ root_pos + new Vector3(cell_pos.x, 0f, cell_pos.y);
 		return pos;
 		
 	}
