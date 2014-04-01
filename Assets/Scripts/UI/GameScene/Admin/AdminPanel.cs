@@ -7,9 +7,16 @@ public class AdminPanel : MonoBehaviour {
 	public UIInput fileName;
 	public UIButton[] buttons;
 
-	void Start() {
+	void Awake () {
 		//TODO это не должно быть тут
 		Application.LoadLevelAdditive("Map");
+	}
+
+	void Start() {
+		//TODO это не должно быть тут
+		UIDragObject mapController = GameObject.FindObjectOfType<UIDragObject>();
+		GameObject mapCamera = GameObject.Find ("Map Camera");
+		mapController.target = mapCamera.transform;
 	}
 
 	void UpdateView() {
