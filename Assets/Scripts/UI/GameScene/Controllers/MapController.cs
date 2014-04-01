@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MapController : MonoBehaviour {
 	GridController grid;
+	public GameObject pr;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +21,8 @@ public class MapController : MonoBehaviour {
 		if (grid.MousePointToColliderHitPosition(out pos)) {	//TODO вообще-то лучше что-нибудь универсальное клик/тач			
 			Vector2 cell = grid.WorldPositionToCell(pos);
 			Debug.Log(cell);
+			Vector3 cell_pos = grid.CellToWorldPositionOfCenter(cell);
+			GameObject.Instantiate(pr, cell_pos, Quaternion.identity);
 		}
 	}
 }
