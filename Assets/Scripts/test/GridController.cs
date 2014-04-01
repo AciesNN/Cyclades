@@ -32,8 +32,7 @@ public class GridController : MonoBehaviour {
 			realTextureSize = new Vector2(gameObject.renderer.material.mainTexture.width, gameObject.renderer.material.mainTexture.height);
 			cell_size = Vector2.Scale(new Vector2(realTextureSize.x , realTextureSize.y), texture_scale);
 		}
-		
-	
+
 		float localScaleX = cell_size.x * cells_count.x;
 		float localScaleY = cell_size.y * cells_count.y;		
 		
@@ -43,10 +42,10 @@ public class GridController : MonoBehaviour {
 		}
 		
 		transform.localScale = new Vector3(localScaleX, localScaleY, 1f);
-		
+
 		//сместимся относительно корня на половину
 		if (transform.root.gameObject != gameObject) {
-			transform.localPosition = new Vector3(transform.localScale.x/2f, 0f, transform.localScale.y/2f);
+			transform.localPosition = new Vector3(transform.localScale.x/2f, transform.localPosition.y, transform.localScale.y/2f);
 		}
 		
 		//поправим текстуру
