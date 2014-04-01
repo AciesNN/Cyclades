@@ -17,7 +17,7 @@ public class MapController : MonoBehaviour {
 	public void OnClick() {
 		Debug.Log("OnClick");
 		Vector3 pos;
-		if (grid.MousePointToColliderHitPosition(out pos)) {				
+		if (grid.MousePointToColliderHitPosition(out pos)) {	//TODO вообще-то лучше что-нибудь универсальное клик/тач			
 			Vector2 cell = grid.WorldPositionToCell(pos);
 			Debug.Log(cell);
 		}

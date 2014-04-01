@@ -19,12 +19,8 @@ public class GridController : MonoBehaviour {
 
 	public Camera mapCamera;
 		
-	Vector3 lastMousePos;
-	bool was_drag = false;
-		
 	// Use this for initialization
 	void Awake () {
-			
 
 		if (cellMode == CellMode.HexCell) {
 			cell_size = Vector2.Scale(new Vector2(realTextureSize.x / 2f, realTextureSize.y), texture_scale);
@@ -58,67 +54,14 @@ public class GridController : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void LateUpdate () {
-		
-		if (Input.GetMouseButtonDown(0)) {
-			was_drag = false;	
-			lastMousePos = Input.mousePosition;
-		} 
-		
-		if (Input.GetMouseButton(0)) {
-			was_drag = was_drag || !Vector3.Equals(lastMousePos, Input.mousePosition);
-			lastMousePos = Input.mousePosition;	
-		}
-		
-		if (Input.GetMouseButtonUp(0)) {
-			if (!was_drag) {
-				Vector3 pos;
-				if (MousePointToColliderHitPosition(out pos)) {				
-					Vector2 cell = WorldPositionToCell(pos);		
-					Shmipl.Base.Messenger<Shmipl.FrmWrk.Library.Coords>.Broadcast("BoardClick", Vector2ToCoords(cell));			
-				} 
-			}
-		}
-		
-		
-		/**/
-		
-        int count = Input.touchCount;
-		Touch touch; 
-        for (int i = 0; i < count && i < 1; i++) {
-            touch = Input.GetTouch (i);
-			
-			if (touch.phase == TouchPhase.Began) {
-				was_drag = false;	
-				lastMousePos = touch.position;
-			} 
-			
-			if (touch.phase == TouchPhase.Moved) {
-				was_drag = was_drag || !Vector3.Equals(lastMousePos, Input.mousePosition);
-				lastMousePos = touch.position;	
-			}
-			
-			if (touch.phase == TouchPhase.Ended) {
-				if (!was_drag) {
-					Vector3 pos;
-					if (TouchPointToColliderHitPosition(touch, out pos)) {				
-						Vector2 cell = WorldPositionToCell(pos);		
-						Shmipl.Base.Messenger<Shmipl.FrmWrk.Library.Coords>.Broadcast("BoardClick", Vector2ToCoords(cell));			
-					} 
-				}
-			}
-		}			
-	}
-	
 	public bool MousePointToColliderHitPosition(out Vector3 pos) {
 
 		Ray ray = mapCamera.ScreenPointToRay(Input.mousePosition);
     	RaycastHit hit;
-    	int mask = 1 << 8; //world layer #8 !!!
+    	int mask = 1 << LayerMask.NameToLayer("Map");
 		
 		if (Physics.Raycast(ray, out hit, mapCamera.farClipPlane, mask))	{
-			if (hit.collider == collider) {
+			if (hit.collider == transform/*.root*/.gameObject.collider) {
 				pos = hit.point;
 				return true;			
 			}
@@ -128,12 +71,13 @@ public class GridController : MonoBehaviour {
 		return false;
 		
 	}
-	
+
+	/*
 	public bool TouchPointToColliderHitPosition(Touch touch, out Vector3 pos) {
 
 		Ray ray = mapCamera.ScreenPointToRay(touch.position);
     	RaycastHit hit;
-    	int mask = 1 << 8; //world layer #8 !!!
+		int mask = 1 << LayerMask.NameToLayer("Map");
 		
 		if (Physics.Raycast(ray, out hit, mapCamera.farClipPlane, mask))	{
 			if (hit.collider == collider) {
@@ -146,7 +90,8 @@ public class GridController : MonoBehaviour {
 		return false;
 		
 	}
-	
+	*/
+
 	public Vector2 WorldPositionToCell(Vector3 pos) {
 				
 		Vector3 local_grid_pos = pos - transform.root.position;
@@ -179,23 +124,23 @@ public class GridController : MonoBehaviour {
 		
 	}
 	
-	public int GetCellSizeX() {
+	public static Vector2 CoordsToVector2(Shmipl.FrmWrk.Library.Coords cell) {
+		return new Vector2(cell.x, cell.y);
+	}
+	
+	public static Shmipl.FrmWrk.Library.Coords Vector2ToCoords(Vector2 cell) {
+		return new Shmipl.FrmWrk.Library.Coords((int)System.Math.Floor(cell.x)
+		                                        , (int)System.Math.Floor(cell.y));
+	}
+
+	/*public int GetCellSizeX() {
 		return (int)System.Math.Floor(cells_count.x);
 	}
 	
 	public int GetCellSizeY() {
 		return (int)System.Math.Floor(cells_count.y);
 	}
-	
-	public static Shmipl.FrmWrk.Library.Coords Vector2ToCoords(Vector2 cell) {
-		return new Shmipl.FrmWrk.Library.Coords((int)System.Math.Floor(cell.x)
-												, (int)System.Math.Floor(cell.y));
-	}
 
-	public static Vector2 CoordsToVector2(Shmipl.FrmWrk.Library.Coords cell) {
-		return new Vector2(cell.x, cell.y);
-	}
-	
 	public Rect GetRect(int x1, int y1, int x2, int y2) {
 		
 		Vector2 cell1 = new Vector2(x1, y1);
@@ -203,5 +148,5 @@ public class GridController : MonoBehaviour {
 		
 		Rect rect = new Rect (pos1.x, pos1.z, (x2-x1+1)*cell_size.x, (y2-y1+1)*cell_size.y);
 		return rect;
-	}
+	}*/
 }
