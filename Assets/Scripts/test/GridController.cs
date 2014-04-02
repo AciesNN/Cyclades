@@ -6,8 +6,14 @@ public enum CellMode
 	QuadCell, HexCell
 }
 
+public enum HexModeOrientation
+{
+	Horizontal, Vertical
+}
+
 public class GridController : MonoBehaviour {
 	public CellMode cellMode;
+	HexModeOrientation hexModeOrientation;
 
 	//количество клеток
 	public Vector2 cells_count;
@@ -23,7 +29,15 @@ public class GridController : MonoBehaviour {
 	void Awake () {
 
 		if (cellMode == CellMode.HexCell) {
-			cell_size = Vector2.Scale(new Vector2(realTextureSize.x / 2f, realTextureSize.y), texture_scale);
+			hexModeOrientation = ( realTextureSize.x > realTextureSize.y ? HexModeOrientation.Horizontal : HexModeOrientation.Vertical );
+		}
+
+		if (cellMode == CellMode.HexCell) {
+			if (hexModeOrientation == HexModeOrientation.Horizontal) {
+				cell_size = Vector2.Scale(new Vector2(realTextureSize.x / 2f, realTextureSize.y), texture_scale);
+			} else {
+				cell_size = Vector2.Scale(new Vector2(realTextureSize.x, realTextureSize.y / 2f), texture_scale);
+			}
 		} else {
 			realTextureSize = new Vector2(gameObject.renderer.material.mainTexture.width, gameObject.renderer.material.mainTexture.height);
 			cell_size = Vector2.Scale(new Vector2(realTextureSize.x, realTextureSize.y), texture_scale);
@@ -33,8 +47,13 @@ public class GridController : MonoBehaviour {
 		float localScaleY = cell_size.y * cells_count.y;		
 		
 		if (cellMode == CellMode.HexCell) {
-			localScaleX = localScaleX + 0f;
-			localScaleY = localScaleY + 0.5f;
+			if (hexModeOrientation == HexModeOrientation.Horizontal) {
+				localScaleX = localScaleX + 0f;
+				localScaleY = localScaleY + 0.5f;
+			} else {
+				localScaleX = localScaleX + 0.5f;
+				localScaleY = localScaleY + 0f;
+			}
 		}
 		
 		transform.localScale = new Vector3(localScaleX, localScaleY, 1f);
@@ -46,8 +65,12 @@ public class GridController : MonoBehaviour {
 		
 		//поправим текстуру
 		if (cellMode == CellMode.HexCell) {
-			gameObject.renderer.material.mainTextureScale = new Vector2(cells_count.x/2f, cells_count.y + 0.5f);
-			gameObject.renderer.material.mainTextureOffset = new Vector2(1f/6f, 0);
+			if (hexModeOrientation == HexModeOrientation.Horizontal) {
+				gameObject.renderer.material.mainTextureScale = new Vector2(cells_count.x/2f, cells_count.y + 0.5f);
+			} else {
+				gameObject.renderer.material.mainTextureScale = new Vector2(cells_count.x + 0.5f, cells_count.y/2f);
+			}
+			//gameObject.renderer.material.mainTextureOffset = new Vector2(1f/6f, 0);
 		} else {
 			gameObject.renderer.material.mainTextureScale = cells_count;
 		}
@@ -94,11 +117,17 @@ public class GridController : MonoBehaviour {
 
 	public Vector2 WorldPositionToCell(Vector3 pos) {
 				
-		Vector3 root_pos = new Vector3(transform.position.x - transform.localScale.x/2f, 0f, transform.position.y - transform.localScale.y/2f);
+		Vector3 root_pos = new Vector3(transform.position.x - transform.localScale.x/2f, 0f, transform.position.z - transform.localScale.y/2f);
 		Vector3 local_grid_pos = pos - root_pos/*transform.root.position*/;
 		Vector2 grid_pos = new Vector2(local_grid_pos.x / transform.localScale.x, local_grid_pos.z / transform.localScale.y);
 		
-		Vector2 cell = Vector2.Scale(cells_count, grid_pos);
+		Vector2 cell_ = Vector2.Scale(cells_count, grid_pos);
+		Vector2 cell;
+		if (hexModeOrientation == HexModeOrientation.Horizontal) {
+			cell = new Vector2(cell_.x - 0.5f, cell_.y);
+		} else {
+			cell = new Vector2(cell_.x, cell_.y - 0.5f);
+		}
 		return cell;
 				
 	}
@@ -110,8 +139,14 @@ public class GridController : MonoBehaviour {
 		float normCellY;
 
 		if (cellMode == CellMode.HexCell) {
-			normCellX = ((float)coord.x) + 0.5f + 1f/6f;
-			normCellY = (float)coord.y + 0.5f + (coord.x%2 == 0 ? 0 : 0.5f);	
+			if (hexModeOrientation == HexModeOrientation.Horizontal) {
+				normCellX = ((float)coord.x) + 0.5f + 1f/6f;
+				normCellY = (float)coord.y + 0.5f + (coord.x%2 == 0 ? 0 : 0.5f);
+			} else {
+				normCellX = (float)coord.x + 0.5f + (coord.y%2 == 0 ? 0 : 0.5f);
+				normCellY = ((float)coord.y) + 0.5f /*+ 1f/6f*/;
+			}
+
 		} else {
 			normCellX = coord.x + 0.5f;
 			normCellY = coord.y + 0.5f;
@@ -120,7 +155,7 @@ public class GridController : MonoBehaviour {
 		Vector2 norm_cell = new Vector2(normCellX, normCellY);
 		Vector2 cell_pos = Vector2.Scale(norm_cell, cell_size);
 
-		Vector3 root_pos = new Vector3(transform.position.x - transform.localScale.x/2f, 0f, transform.position.y - transform.localScale.y/2f);
+		Vector3 root_pos = new Vector3(transform.position.x - transform.localScale.x/2f, 0f, transform.position.z - transform.localScale.y/2f);
 		Vector3 pos = /*transform.root.position*/ root_pos + new Vector3(cell_pos.x, 0f, cell_pos.y);
 		return pos;
 		

@@ -22,6 +22,7 @@ public class MapController : MonoBehaviour {
 			Vector2 cell = grid.WorldPositionToCell(pos);
 			Debug.Log(cell);
 			Vector3 cell_pos = grid.CellToWorldPositionOfCenter(cell);
+
 			GameObject.Instantiate(pr, cell_pos, Quaternion.identity);
 		}
 	}
