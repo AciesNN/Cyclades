@@ -142,7 +142,7 @@ namespace Shmipl.Unity
 
 			if (cellMode == CellMode.HexCell) {
 				if (hexModeOrientation == HexModeOrientation.Horizontal) {
-					normCellX = ((float)coord.x) + 0.5f + 1f/6f;
+					normCellX = ((float)coord.x) + 0.5f/* + 1f/6f*/;
 					normCellY = (float)coord.y + 0.5f + (coord.x%2 == 0 ? 0 : 0.5f);
 				} else {
 					normCellX = (float)coord.x + 0.5f + (coord.y%2 == 0 ? 0 : 0.5f);
