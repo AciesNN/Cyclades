@@ -12,13 +12,14 @@ namespace Shmipl.Unity
 		public static void LoadHeighMapFromTexture(Texture2D texture, Terrain terrain) {
 			float[,] heights = terrain.terrainData.GetHeights(0, 0, terrain.terrainData.heightmapResolution, terrain.terrainData.heightmapResolution);
 			
-			//хитрость с координатами сделана потому, что матрица террейна считается снизу справа, а точки картинки - сверху слева
-			for (int y = terrain.terrainData.heightmapResolution-1; y >= 0; --y)
-			{
+			//хитрость с координатами сделана потому, что матрица террейна считается снизу справа, как и картинка, но считается по другим осям
+			for (int y = 0; y < terrain.terrainData.heightmapResolution; ++y)
+			{				
 				for (int x = 0; x < terrain.terrainData.heightmapResolution; ++x)
 				{
-					if (y < texture.height && x < texture.width) {
-						float height = 1.0f - texture.GetPixel(x, terrain.terrainData.heightmapResolution - y - 1).grayscale;
+
+					if (y < texture.width && x < texture.height) {
+						float height = 1.0f - texture.GetPixel(y, x).grayscale;
 						heights[x, y] = maxHeight * height;
 					} else {
 						heights[x, y] = 0.0f;
