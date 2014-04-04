@@ -2,14 +2,14 @@
 using System.Collections;
 
 public class MapController : MonoBehaviour {
-	GridController grid;
+	Shmipl.Unity.GridController grid;
 	Terrain terrain;
 	public GameObject pr;
 	public Texture2D texture;
 
 	// Use this for initialization
 	void Start () {
-		grid = GameObject.Find("grid").GetComponent<GridController>();
+		grid = GameObject.Find("grid").GetComponent<Shmipl.Unity.GridController>();
 		terrain = GameObject.Find("Terrain").GetComponent<Terrain>();
 
 		Shmipl.Unity.TerrainHeightsLoader.LoadHeighMapFromTexture(texture, terrain);
