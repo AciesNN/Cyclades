@@ -6,6 +6,7 @@ using Shmipl.Unity;
 public class AdminPanel : MonoBehaviour {
 	public UIInput fileName;
 	public UIButton[] buttons;
+	MapController mapController;
 
 	void Awake () {
 		//TODO это не должно быть тут
@@ -14,9 +15,12 @@ public class AdminPanel : MonoBehaviour {
 
 	void Start() {
 		//TODO это не должно быть тут
-		UIDragObject mapController = GameObject.FindObjectOfType<UIDragObject>();
+		UIDragObject mapDnDController = GameObject.FindObjectOfType<UIDragObject>();
 		GameObject mapCamera = GameObject.Find ("Map Camera");
-		mapController.target = mapCamera.transform;
+		mapDnDController.target = mapCamera.transform;
+
+		mapController = GameObject.FindObjectOfType<MapController>();
+		mapController.InitMap();
 	}
 
 	void UpdateView() {
