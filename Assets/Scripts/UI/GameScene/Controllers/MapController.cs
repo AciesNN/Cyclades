@@ -12,7 +12,7 @@ public class MapController : MonoBehaviour {
 		grid = GameObject.Find("grid").GetComponent<Shmipl.Unity.GridController>();
 		terrain = GameObject.Find("Terrain").GetComponent<Terrain>();
 
-		Shmipl.Unity.TerrainHeightsLoader.LoadHeighMapFromTexture(texture, terrain);
+		InitMap();
 	}
 	
 	// Update is called once per frame
@@ -30,5 +30,9 @@ public class MapController : MonoBehaviour {
 
 			GameObject.Instantiate(pr, cell_pos, Quaternion.identity);
 		}
+	}
+
+	void InitMap() {
+		Shmipl.Unity.TerrainHeightsLoader.LoadHeighMapFromTexture(texture, terrain);
 	}
 }
