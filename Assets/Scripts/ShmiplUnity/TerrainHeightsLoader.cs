@@ -8,6 +8,12 @@ namespace Shmipl.Unity
 
 		/*загружает карту высот из градиента серого картинки
 		 * внимание, надо сделать текстуру читаемой (для чего поставить тип текстуры advanced)
+		 * 
+		 * TODO на данный момент размер картинки высчитывается сложным образом из пропорции x/513 = 832/850
+		 * где 513 - разрешение карты высот, 832 - вычесленный размер сетки, 850 - размер террейна
+		 * надо бы сделать так, чтобы картинка была бы "растягиваемой", так чтобы пропорция задавалась програмно, вычисляясь из текущих
+		 * данных, а размер можно было бы делать произвольно
+		 * 
 		*/
 		public static void LoadHeighMapFromTexture(Texture2D texture, Terrain terrain) {
 			float[,] heights = terrain.terrainData.GetHeights(0, 0, terrain.terrainData.heightmapResolution, terrain.terrainData.heightmapResolution);

@@ -48,7 +48,7 @@ namespace Shmipl.Unity
 			float localScaleX = cell_size.x * cells_count.x;
 			float localScaleY = cell_size.y * cells_count.y;		
 			
-			if (cellMode == CellMode.HexCell) {
+			/*if (cellMode == CellMode.HexCell) {
 				if (hexModeOrientation == HexModeOrientation.Horizontal) {
 					localScaleX = localScaleX + 0f;
 					localScaleY = localScaleY + 0.5f;
@@ -56,7 +56,7 @@ namespace Shmipl.Unity
 					localScaleX = localScaleX + 0.5f;
 					localScaleY = localScaleY + 0f;
 				}
-			}
+			}*/
 			
 			transform.localScale = new Vector3(localScaleX, localScaleY, 1f);
 
@@ -68,9 +68,9 @@ namespace Shmipl.Unity
 			//поправим текстуру
 			if (cellMode == CellMode.HexCell) {
 				if (hexModeOrientation == HexModeOrientation.Horizontal) {
-					gameObject.renderer.material.mainTextureScale = new Vector2(cells_count.x/2f, cells_count.y + 0.5f);
+					gameObject.renderer.material.mainTextureScale = new Vector2(cells_count.x/2f + 0.5f, cells_count.y + 0.5f);
 				} else {
-					gameObject.renderer.material.mainTextureScale = new Vector2(cells_count.x + 0.5f, cells_count.y/2f);
+					gameObject.renderer.material.mainTextureScale = new Vector2(cells_count.x + 0.5f, cells_count.y/2f + 0.5f);
 				}
 				//gameObject.renderer.material.mainTextureOffset = new Vector2(1f/6f, 0);
 			} else {
