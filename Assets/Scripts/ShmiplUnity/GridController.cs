@@ -50,9 +50,11 @@ namespace Shmipl.Unity
 			
 			if (cellMode == CellMode.HexCell) {
 				if (hexModeOrientation == HexModeOrientation.Horizontal) {
+					localScaleX = localScaleX + cell_size.x * 1.0f;
 					localScaleY = localScaleY + cell_size.y * 0.5f;
 				} else {
 					localScaleX = localScaleX + cell_size.x * 0.5f;
+					localScaleY = localScaleY + cell_size.y * 1.0f;
 				}
 			}
 			
@@ -141,9 +143,9 @@ namespace Shmipl.Unity
 			if (cellMode == CellMode.HexCell) {
 				if (hexModeOrientation == HexModeOrientation.Horizontal) {
 					normCellX = ((float)coord.x)/* + 1f/6f*/;
-					normCellY = (float)coord.y + 0.5f + (coord.x%2 == 0 ? 0 : 0.5f);
+					normCellY = (float)coord.y /*+ 0.5f*/ + (coord.x%2 == 0 ? 0 : 0.5f);
 				} else {
-					normCellX = (float)coord.x + 0.5f + (coord.y%2 == 0 ? 0 : 0.5f);
+					normCellX = (float)coord.x /*+ 0.5f*/ + (coord.y%2 == 0 ? 0 : 0.5f);
 					normCellY = ((float)coord.y) /*+ 1f/6f*/;
 				}
 
