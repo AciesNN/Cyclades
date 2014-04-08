@@ -48,15 +48,13 @@ namespace Shmipl.Unity
 			float localScaleX = cell_size.x * cells_count.x;
 			float localScaleY = cell_size.y * cells_count.y;		
 			
-			/*if (cellMode == CellMode.HexCell) {
+			if (cellMode == CellMode.HexCell) {
 				if (hexModeOrientation == HexModeOrientation.Horizontal) {
-					localScaleX = localScaleX + 0f;
-					localScaleY = localScaleY + 0.5f;
+					localScaleY = localScaleY + cell_size.y * 0.5f;
 				} else {
-					localScaleX = localScaleX + 0.5f;
-					localScaleY = localScaleY + 0f;
+					localScaleX = localScaleX + cell_size.x * 0.5f;
 				}
-			}*/
+			}
 			
 			transform.localScale = new Vector3(localScaleX, localScaleY, 1f);
 
