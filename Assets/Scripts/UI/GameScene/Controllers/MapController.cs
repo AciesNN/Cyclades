@@ -43,10 +43,10 @@ public class MapController : MonoBehaviour {
 		Vector2 res;
 
 		//1. учтем перевернутый ыгрик 
-		res = new Vector2(coords.x, grid.cells_count.y - coords.y);
+		res = new Vector2(coords.x, (grid.cells_count.y - 1) - coords.y); //-1 потому что: например, высота 13, координата 0, надо получить 12, т.к. мндексация с нуля
 
 		//2. учтем бордюры
-		res = new Vector2(res.x + 1f, res.y + 0f);
+		res = new Vector2(res.x + 1f, res.y - 1f); //+ и - потому, что в одном случае мы отступаем от начала координат, а потом - от конца (координаты Киклад идут от верхнего угла, а сетки - от нижнего)
 
 		//3. учтем разную длину разных линий
 		res = new Vector2(res.x + System.Math.Abs(coords.y - 5)/2, res.y);
@@ -61,7 +61,7 @@ public class MapController : MonoBehaviour {
 		res = new Coords(res.x, (int)grid.cells_count.y - res.y - 2); //TODO - тут непонятная двойка из-за того, что размер решетки "не честный"
 
 		//2. учтем бордюры
-		res = new Coords(res.x - 1, res.y - 0);
+		res = new Coords(res.x - 1, res.y + 1); //+ и - потому, что в одном случае мы отступаем от начала координат, а потом - от конца (координаты Киклад идут от верхнего угла, а сетки - от нижнего)
 
 		//3. учтем разную длину разных линий
 		res = new Coords(res.x - System.Math.Abs(res.y - 5)/2, res.y);
