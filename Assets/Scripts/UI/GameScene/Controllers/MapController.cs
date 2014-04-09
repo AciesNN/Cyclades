@@ -27,7 +27,7 @@ public class MapController : MonoBehaviour {
 	}
 
 	public void OnClick() {
-		Debug.Log("OnClick");
+		//Debug.Log("OnClick");
 		Vector3 pos;
 		if (grid.MousePointToColliderHitPosition(out pos)) {	//TODO вообще-то лучше что-нибудь универсальное клик/тач			
 			Vector2 cell = grid.WorldPositionToCell(pos);
@@ -43,7 +43,7 @@ public class MapController : MonoBehaviour {
 		Vector2 res;
 
 		//1. учтем перевернутый ыгрик 
-		res = new Vector2(coords.x, (grid.cells_count.y - 1) - coords.y); //-1 потому что: например, высота 13, координата 0, надо получить 12, т.к. мндексация с нуля
+		res = new Vector2(coords.x, (grid.cells_count.y - 1) - coords.y); //-1 потому что: например, высота 13, координата 0, надо получить 12, т.к. индексация с нуля
 
 		//2. учтем бордюры
 		res = new Vector2(res.x + 1f, res.y - 1f); //+ и - потому, что в одном случае мы отступаем от начала координат, а потом - от конца (координаты Киклад идут от верхнего угла, а сетки - от нижнего)
@@ -58,10 +58,10 @@ public class MapController : MonoBehaviour {
 		Coords res = Shmipl.Unity.GridController.Vector2ToCoords(coords);;
 		
 		//2. учтем перевернутый ыгрик 
-		res = new Coords(res.x, (int)grid.cells_count.y - res.y - 2); //TODO - тут непонятная двойка из-за того, что размер решетки "не честный"
+		res = new Coords(res.x, ((int)grid.cells_count.y - 1) - res.y);
 
 		//2. учтем бордюры
-		res = new Coords(res.x - 1, res.y + 1); //+ и - потому, что в одном случае мы отступаем от начала координат, а потом - от конца (координаты Киклад идут от верхнего угла, а сетки - от нижнего)
+		res = new Coords(res.x - 1, res.y - 1); 
 
 		//3. учтем разную длину разных линий
 		res = new Coords(res.x - System.Math.Abs(res.y - 5)/2, res.y);

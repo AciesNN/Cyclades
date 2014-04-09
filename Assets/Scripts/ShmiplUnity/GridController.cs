@@ -121,17 +121,27 @@ namespace Shmipl.Unity
 					
 			Vector3 root_pos = new Vector3(transform.position.x - transform.localScale.x/2f, 0f, transform.position.z - transform.localScale.y/2f);
 			Vector3 local_grid_pos = pos - root_pos/*transform.root.position*/;
-			Vector2 grid_pos = new Vector2(local_grid_pos.x / transform.localScale.x, local_grid_pos.z / transform.localScale.y);
-			
-			Vector2 cell_ = Vector2.Scale(cells_count, grid_pos);
-			Vector2 cell;
+			//Vector2 grid_pos = new Vector2(local_grid_pos.x / transform.localScale.x, local_grid_pos.z / transform.localScale.y);
+			Vector2 grid_pos = new Vector2(local_grid_pos.x / cell_size.x, local_grid_pos.z / cell_size.y);
+
+			Vector2 cell = grid_pos; //Vector2.Scale(cells_count, grid_pos);
+
+			//1. учтем странную форму нашей плитки, она равняется половине вытянутой вверх "гридине"
 			if (hexModeOrientation == HexModeOrientation.Horizontal) {
-				cell = new Vector2(cell_.x - 0.5f, cell_.y);
+				cell = new Vector2(cell.x - 0.5f, cell.y);
 			} else {
-				cell = new Vector2(cell_.x, cell_.y - 0.5f);
+				cell = new Vector2(cell.x, cell.y - 0.5f);
 			}
+
+			//2. учтем что нечетные ряды сдвинуты
+			if (hexModeOrientation == HexModeOrientation.Horizontal) {
+				cell = new Vector2(cell.x, cell.y - (((int)(System.Math.Floor(cell.x)))%2 == 0 ? 0 : 0.5f));
+			} else {
+				cell = new Vector2(cell.x - (((int)(System.Math.Floor(cell.y)))%2 == 0 ? 0 : 0.5f), cell.y);
+			}
+			//Debug.Log(cell);
 			return cell;
-					
+
 		}
 		
 		public Vector3 CellToWorldPositionOfCenter(Vector2 cell) {
@@ -142,13 +152,12 @@ namespace Shmipl.Unity
 
 			if (cellMode == CellMode.HexCell) {
 				if (hexModeOrientation == HexModeOrientation.Horizontal) {
-					normCellX = ((float)coord.x)/* + 1f/6f*/;
-					normCellY = (float)coord.y /*+ 0.5f*/ + (coord.x%2 == 0 ? 0 : 0.5f);
+					normCellX = ((float)coord.x) + 1.0f/* + 1f/6f*/;
+					normCellY = (float)coord.y + 0.5f + (coord.x%2 == 0 ? 0 : 0.5f);
 				} else {
-					normCellX = (float)coord.x /*+ 0.5f*/ + (coord.y%2 == 0 ? 0 : 0.5f);
-					normCellY = ((float)coord.y) /*+ 1f/6f*/;
+					normCellX = (float)coord.x + 0.5f + (coord.y%2 == 0 ? 0 : 0.5f);
+					normCellY = ((float)coord.y) + 1.0f; /*+ 1f/6f*/;
 				}
-
 			} else {
 				normCellX = coord.x + 0.5f;
 				normCellY = coord.y + 0.5f;
