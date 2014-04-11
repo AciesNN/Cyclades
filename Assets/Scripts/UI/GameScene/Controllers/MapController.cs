@@ -32,8 +32,10 @@ public class MapController : MonoBehaviour {
 		if (grid.MousePointToColliderHitPosition(out pos)) {	//TODO вообще-то лучше что-нибудь универсальное клик/тач			
 			Vector2 cell = grid.WorldPositionToCell(pos);
 			Coords coords = CellToCycladesCoord(cell);
-			Debug.Log(coords);
 
+			Shmipl.Base.Messenger<Coords>.Broadcast("Shmipl.Map.Click", coords);
+
+			//Debug.Log(coords);
 			//Vector3 cell_pos = grid.CellToWorldPositionOfCenter(cell);
 			//GameObject.Instantiate(pr, cell_pos, Quaternion.identity);
 		}
