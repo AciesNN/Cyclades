@@ -104,20 +104,31 @@ namespace Shmipl.GameScene
 		}
 
 		void InitIslandsObjects() {
+
+			//1. сначала создадим, куда засовывать создаваемые объекты
+			Transform parent = terrain.transform;
+
+			//2. теперь создадим
 			List<object> islands = data.context.GetList("/map/islands/coords");
 			foreach(List<object> island in islands) {
 
-				Coords coord = new Coords(((List<object>)island[0])[0], ((List<long>)island[0])[1]); //координаты первой точки каждого острова
+				Coords coord = new Coords((long)((List<object>)island[0])[0], (long)((List<object>)island[0])[1]); //координаты первой точки каждого острова
 
 				//на каждом острове создадим: рога, воинов, принадлежность, 
-				CreateObject(coord, 0);
+				CreateObject(parent, "horn", coord, 0, -10, -10);
+				CreateObject(parent, "army", coord, 0, 10, 10);
+				CreateObject(parent, "whos", coord, 0, 10, -10);
+				CreateObject(parent, "buildings", coord, 0, -10, 10);
 			}
 		}
 
-		public MapObjectController CreateObject(Coords coord, long count) {
+		public MapObjectController CreateObject(Transform parent, string name, Coords coord, long count, float dx, float dy) {
 			Vector3 _coord = grid.CellToWorldPositionOfCenter(CycladesCoordToCell(coord));
-			Vector3 obj_coord3 = new Vector3(_coord.x, mapObjectHeight, _coord.z);			
+			Vector3 obj_coord3 = new Vector3(_coord.x + dx, mapObjectHeight, _coord.z + dy);			
 			GameObject go_ = GameObject.Instantiate(objPrefab, obj_coord3, Quaternion.identity) as GameObject;
+			go_.name = name;
+			go_.transform.parent = parent;
+
 			MapObjectController go = go_.GetComponent<MapObjectController>();
 			go.SetCount(count);
 			
