@@ -16,5 +16,9 @@ namespace Shmipl.GameScene
 			else
 				countText.text = "" + count;
 		}
+
+		public void SetText(string text) {
+			countText.text = text;
+		}
 	}
 }

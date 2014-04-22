@@ -19,6 +19,11 @@ namespace Shmipl.GameScene
 
 		readonly float mapObjectHeight = 20.0f;
 
+		MapObjectController[] horns_objects;
+		MapObjectController[] army_objects;
+		MapObjectController[] buildings_objects;
+		MapObjectController[] whoes_objects;
+
 		bool isInit = false;
 
 		// Use this for initialization
@@ -95,11 +100,18 @@ namespace Shmipl.GameScene
 		}
 
 		void InitSeaHorns() {
+			Transform parent = terrain.transform;
+
 			List<Coords> horns = data.context.GetListCoords("/map/seas/horns");
+			int ch = 0;
 			foreach(Coords horn in horns) {
 				Vector3 horn_coord = grid.CellToWorldPositionOfCenter(CycladesCoordToCell(horn));
 				Vector3 horn_coord3 = new Vector3(horn_coord.x, mapObjectHeight, horn_coord.z);
-				GameObject.Instantiate(hornPrefab, horn_coord3, Quaternion.identity);
+				GameObject go = GameObject.Instantiate(hornPrefab, horn_coord3, Quaternion.identity) as GameObject;
+				go.transform.parent = parent;
+				go.name = "sea horn " + ch;
+
+				ch = ch + 1;
 			}
 		}
 
@@ -108,17 +120,29 @@ namespace Shmipl.GameScene
 			//1. сначала создадим, куда засовывать создаваемые объекты
 			Transform parent = terrain.transform;
 
-			//2. теперь создадим
+
 			List<object> islands = data.context.GetList("/map/islands/coords");
+
+			//2. создадим списки ссылок 
+			int l_lenght = islands.Count;
+			horns_objects = new MapObjectController[l_lenght];
+			army_objects = new MapObjectController[l_lenght];
+			buildings_objects = new MapObjectController[l_lenght];
+			whoes_objects = new MapObjectController[l_lenght];
+
+			//2. теперь создадим
+			int ch = 0;
 			foreach(List<object> island in islands) {
 
 				Coords coord = new Coords((long)((List<object>)island[0])[0], (long)((List<object>)island[0])[1]); //координаты первой точки каждого острова
 
 				//на каждом острове создадим: рога, воинов, принадлежность, 
-				CreateObject(parent, "horn", coord, 0, -10, -10);
-				CreateObject(parent, "army", coord, 0, 10, 10);
-				CreateObject(parent, "whos", coord, 0, 10, -10);
-				CreateObject(parent, "buildings", coord, 0, -10, 10);
+				horns_objects[ch] = CreateObject(parent, "horn " + ch, coord, 0, -10, -10);
+				army_objects[ch] = CreateObject(parent, "army " + ch, coord, 0, 10, 10);
+				whoes_objects[ch] = CreateObject(parent, "whoes " + ch, coord, 0, 10, -10);
+				buildings_objects[ch] = CreateObject(parent, "buildings " + ch, coord, 0, -10, 10);
+
+				ch = ch + 1;
 			}
 		}
 
