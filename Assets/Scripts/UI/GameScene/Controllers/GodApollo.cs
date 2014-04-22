@@ -12,6 +12,15 @@ namespace Shmipl.GameScene
 			isEnabled = (Client.cur_player == Library.GetCurrentPlayer(data.context));
 		}
 		
+		public void EndTurn() {
+			if (data.game.gameMode != GameMode.simple) {
+				Debug.Log ("NOT ENABLED"); //по идее, надо ограничивать доступность
+				return;
+			}
+			Hashtable msg = Client.EndPlayerTurn();
+			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
+		}
+
 		void PlaceApollo() {
 			//TODO
 		}

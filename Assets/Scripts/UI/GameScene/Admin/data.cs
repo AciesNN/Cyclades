@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class data {
+	public static readonly Shmipl.GameScene.GameController game;
 	public static Shmipl.Base.Context context = new Shmipl.Base.Context();
 	private static readonly List<Color> userColors = new List<Color> 
 														{Color.green,
@@ -12,6 +13,7 @@ public static class data {
 														Color.yellow};
 
 	static data()	{
+		game = new Shmipl.GameScene.GameController();
 		LoadData("1");
 	}
 
