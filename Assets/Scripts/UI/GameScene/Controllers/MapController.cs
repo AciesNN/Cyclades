@@ -14,8 +14,8 @@ namespace Shmipl.GameScene
 		public GameObject pr;
 		public Texture2D texture;
 
-		public GameObject hornPrefab;
 		public GameObject objPrefab;
+		public GameObject hornPrefab;
 
 		readonly float mapObjectHeight = 20.0f;
 
@@ -34,12 +34,32 @@ namespace Shmipl.GameScene
 		
 		public override void UpdateView () {
 			Update_WhoesObjects();
+			Update_ArmyObjects();
+			Update_HornsObjects();
+		}
+
+		void Update_HornsObjects() {
+			List<long> horns = data.context.GetList<long>("/map/islands/horn");
+			for(int ch = 0; ch < horns.Count; ++ch) {
+				horns_objects[ch].SetCount(horns[ch]);
+				horns_objects[ch].gameObject.SetActive(horns[ch] > 0);
+			}
 		}
 
 		void Update_WhoesObjects() {
 			List<long> owners = data.context.GetList<long>("/map/islands/owners");
 			for(int ch = 0; ch < owners.Count; ++ch) {
 				owners_objects[ch].renderer.material.color = data.GetColor(owners[ch]);
+			}
+		}
+
+		void Update_ArmyObjects() {
+			List<long> owners = data.context.GetList<long>("/map/islands/owners");
+			List<long> army = data.context.GetList<long>("/map/islands/army");
+			for(int ch = 0; ch < army.Count; ++ch) {
+				army_objects[ch].renderer.material.color = data.GetColor(owners[ch]);
+				army_objects[ch].SetCount(army[ch]);
+				army_objects[ch].gameObject.SetActive(army[ch] > 0);
 			}
 		}
 
@@ -143,19 +163,19 @@ namespace Shmipl.GameScene
 				Coords coord = new Coords((long)((List<object>)island[0])[0], (long)((List<object>)island[0])[1]); //координаты первой точки каждого острова
 
 				//на каждом острове создадим: рога, воинов, принадлежность, 
-				horns_objects[ch] = CreateObject(parent, "horn " + ch, coord, 0, -10, -10);
-				army_objects[ch] = CreateObject(parent, "army " + ch, coord, 0, 10, 10);
-				owners_objects[ch] = CreateObject(parent, "owners " + ch, coord, 0, 10, -10);
-				buildings_objects[ch] = CreateObject(parent, "buildings " + ch, coord, 0, -10, 10);
+				horns_objects[ch] = CreateObject(hornPrefab, parent, "horn " + ch, coord, 0, -10, -10);
+				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 0, 10, 10);
+				owners_objects[ch] = CreateObject(objPrefab, parent, "owners " + ch, coord, 0, 10, -10);
+				buildings_objects[ch] = CreateObject(objPrefab, parent, "buildings " + ch, coord, 0, -10, 10);
 
 				ch = ch + 1;
 			}
 		}
 
-		public MapObjectController CreateObject(Transform parent, string name, Coords coord, long count, float dx, float dy) {
+		public MapObjectController CreateObject(GameObject prefab, Transform parent, string name, Coords coord, long count, float dx, float dy) {
 			Vector3 _coord = grid.CellToWorldPositionOfCenter(CycladesCoordToCell(coord));
 			Vector3 obj_coord3 = new Vector3(_coord.x + dx, mapObjectHeight, _coord.z + dy);			
-			GameObject go_ = GameObject.Instantiate(objPrefab, obj_coord3, Quaternion.identity) as GameObject;
+			GameObject go_ = GameObject.Instantiate(prefab, obj_coord3, Quaternion.identity) as GameObject;
 			go_.name = name;
 			go_.transform.parent = parent;
 
