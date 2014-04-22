@@ -8,7 +8,7 @@ using Shmipl.FrmWrk.Library;
 
 namespace Shmipl.GameScene
 {
-	public class MapController : MonoBehaviour {
+	public class MapController : UIController {
 		Shmipl.Unity.GridController grid;
 		Terrain terrain;
 		public GameObject pr;
@@ -22,7 +22,7 @@ namespace Shmipl.GameScene
 		MapObjectController[] horns_objects;
 		MapObjectController[] army_objects;
 		MapObjectController[] buildings_objects;
-		MapObjectController[] whoes_objects;
+		MapObjectController[] owners_objects;
 
 		bool isInit = false;
 
@@ -32,9 +32,15 @@ namespace Shmipl.GameScene
 			terrain = GameObject.Find("Terrain").GetComponent<Terrain>();
 		}
 		
-		// Update is called once per frame
-		void Update () {
-		
+		public override void UpdateView () {
+			Update_WhoesObjects();
+		}
+
+		void Update_WhoesObjects() {
+			List<long> owners = data.context.GetList<long>("/map/islands/owners");
+			for(int ch = 0; ch < owners.Count; ++ch) {
+				owners_objects[ch].renderer.material.color = data.GetColor(owners[ch]);
+			}
 		}
 
 		public void OnClick() {
@@ -128,7 +134,7 @@ namespace Shmipl.GameScene
 			horns_objects = new MapObjectController[l_lenght];
 			army_objects = new MapObjectController[l_lenght];
 			buildings_objects = new MapObjectController[l_lenght];
-			whoes_objects = new MapObjectController[l_lenght];
+			owners_objects = new MapObjectController[l_lenght];
 
 			//2. теперь создадим
 			int ch = 0;
@@ -139,7 +145,7 @@ namespace Shmipl.GameScene
 				//на каждом острове создадим: рога, воинов, принадлежность, 
 				horns_objects[ch] = CreateObject(parent, "horn " + ch, coord, 0, -10, -10);
 				army_objects[ch] = CreateObject(parent, "army " + ch, coord, 0, 10, 10);
-				whoes_objects[ch] = CreateObject(parent, "whoes " + ch, coord, 0, 10, -10);
+				owners_objects[ch] = CreateObject(parent, "owners " + ch, coord, 0, 10, -10);
 				buildings_objects[ch] = CreateObject(parent, "buildings " + ch, coord, 0, -10, 10);
 
 				ch = ch + 1;
