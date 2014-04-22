@@ -16,6 +16,7 @@ namespace Shmipl.GameScene
 
 		public GameObject objPrefab;
 		public GameObject hornPrefab;
+		public GameObject ownerPrefab;
 
 		readonly float mapObjectHeight = 20.0f;
 
@@ -36,6 +37,7 @@ namespace Shmipl.GameScene
 			Update_WhoesObjects();
 			Update_ArmyObjects();
 			Update_HornsObjects();
+			Update_BuildingsObjects();
 		}
 
 		void Update_HornsObjects() {
@@ -48,8 +50,10 @@ namespace Shmipl.GameScene
 
 		void Update_WhoesObjects() {
 			List<long> owners = data.context.GetList<long>("/map/islands/owners");
+			List<long> army = data.context.GetList<long>("/map/islands/army");
 			for(int ch = 0; ch < owners.Count; ++ch) {
 				owners_objects[ch].renderer.material.color = data.GetColor(owners[ch]);
+				owners_objects[ch].gameObject.SetActive(army[ch] == 0 && owners[ch] >= 0);
 			}
 		}
 
@@ -60,6 +64,13 @@ namespace Shmipl.GameScene
 				army_objects[ch].renderer.material.color = data.GetColor(owners[ch]);
 				army_objects[ch].SetCount(army[ch]);
 				army_objects[ch].gameObject.SetActive(army[ch] > 0);
+			}
+		}
+
+		void Update_BuildingsObjects() {
+			List<long> owners = data.context.GetList<long>("/map/islands/owners");
+			for(int ch = 0; ch < owners.Count; ++ch) {
+				buildings_objects[ch].gameObject.SetActive(false);
 			}
 		}
 
@@ -164,9 +175,9 @@ namespace Shmipl.GameScene
 
 				//на каждом острове создадим: рога, воинов, принадлежность, 
 				horns_objects[ch] = CreateObject(hornPrefab, parent, "horn " + ch, coord, 0, -10, -10);
-				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 0, 10, 10);
-				owners_objects[ch] = CreateObject(objPrefab, parent, "owners " + ch, coord, 0, 10, -10);
-				buildings_objects[ch] = CreateObject(objPrefab, parent, "buildings " + ch, coord, 0, -10, 10);
+				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 0, -10, 10);
+				owners_objects[ch] = CreateObject(ownerPrefab, parent, "owners " + ch, coord, 0, 10, -10);
+				buildings_objects[ch] = CreateObject(objPrefab, parent, "buildings " + ch, coord, 0, 10, 10);
 
 				ch = ch + 1;
 			}
