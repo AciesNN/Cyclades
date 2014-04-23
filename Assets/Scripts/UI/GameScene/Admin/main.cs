@@ -24,8 +24,9 @@ namespace Shmipl.GameScene
 		public Shmipl.Base.Context context {
 			get {
 				if (Cyclades.Game.Client.Messanges.cur_player == -1) {
-					Debug.Log("не выбран текущий игрок");
-					return null;
+					//Debug.Log("не выбран текущий игрок");
+					//TODO!!! тут вот вообще нехорошо! убрать! пользуемся вредной функцией
+					return Cyclades.Program.srv.GetContext("Game");
 				}
 				return Cyclades.Program.clnts[(int)Cyclades.Game.Client.Messanges.cur_player].GetContext("Game");
 			}
@@ -45,7 +46,7 @@ namespace Shmipl.GameScene
 		}
 
 		public void LoadData(string name) {
-			context.LoadDataFromFile("Assets\\Data\\" + name + ".txt");
+			Cyclades.Program.srv.GetContext("Game").LoadDataFromFile("Assets\\Data\\" + name + ".txt");
 		}
 
 		public Color GetColor(long user) {
