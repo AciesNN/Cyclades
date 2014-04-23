@@ -32,9 +32,9 @@ namespace Shmipl.GameScene
 		public override void UpdateView () {
 			EnableBet_UpdateView();
 
-			long appolo_god_number = data.context.Get<long> ("/players_number") - 1;
+			long appolo_god_number = main.instance.context.Get<long> ("/players_number") - 1;
 
-			List<int> appoloBets = Library.Auction_GetAllOrderBetPlayersForGod(data.context, appolo_god_number);
+			List<int> appoloBets = Library.Auction_GetAllOrderBetPlayersForGod(main.instance.context, appolo_god_number);
 			for (int i = 0; i < bets.Length; ++i) {
 				bets[i].gameObject.SetActive( i < appoloBets.Count );
 				if (i < appoloBets.Count) {
@@ -45,8 +45,8 @@ namespace Shmipl.GameScene
 
 		/*события*/
 		public void ConfirmActiveGodBet() {
-			long appolo_god_number = data.context.Get<long> ("/players_number") - 1;
-			int bet = Library.Auction_GetAllOrderBetPlayersForGod(data.context, appolo_god_number).Count + 1;
+			long appolo_god_number = main.instance.context.Get<long> ("/players_number") - 1;
+			int bet = Library.Auction_GetAllOrderBetPlayersForGod(main.instance.context, appolo_god_number).Count + 1;
 			((AuctionGods)parentController).ConfirmAppoloBet(bet);
 		}
 	}

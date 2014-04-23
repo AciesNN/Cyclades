@@ -19,7 +19,7 @@ namespace Shmipl.GameScene
 		public UILabel[] cards_labels;
 
 		void OpenCard_UpdateView(int index) {
-			List<string> open_cards = data.context.GetList<string>("/cards/open");
+			List<string> open_cards = main.instance.context.GetList<string>("/cards/open");
 
 			if (open_cards.Count > index) {
 				cards_labels[index].text = open_cards[index];
@@ -39,19 +39,19 @@ namespace Shmipl.GameScene
 
 		public override void UpdateView () {
 			OpenCards_UpdateView();
-			if (Client.cur_player != Library.GetCurrentPlayer(data.context))
+			if (Cyclades.Game.Client.Messanges.cur_player != Library.GetCurrentPlayer(main.instance.context))
 				isEnabled = false;
-			if (Library.GetPhase(data.context) != Phase.TurnPhase)
+			if (Library.GetPhase(main.instance.context) != Phase.TurnPhase)
 				isEnabled = false;
 		}
 		
 		public void BuyCard(long card) {
 			Hashtable msg;
 			if (card_choose_mode == CardPanelController_CardChoose_Mode.Change) {
-				msg = Client.ChangeCard(card);
+				msg = Cyclades.Game.Client.Messanges.ChangeCard(card);
 				card_choose_mode = CardPanelController_CardChoose_Mode.Buy;
 			} else {
-				msg = Client.BuyCard(card);
+				msg = Cyclades.Game.Client.Messanges.BuyCard(card);
 			}
 			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
 		}

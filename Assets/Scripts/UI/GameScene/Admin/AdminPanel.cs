@@ -11,6 +11,8 @@ namespace Shmipl.GameScene
 		MapController mapController;
 
 		void Awake () {
+			Shmipl.Base.Messenger.AddListener("UnityShmipl.UpdateView", UpdateView);
+
 			//TODO это не должно быть тут
 			Application.LoadLevelAdditive("Map");
 		}
@@ -30,12 +32,12 @@ namespace Shmipl.GameScene
 		}
 
 		void DataLoad() {
-			data.LoadData((fileName.value == "" ? fileName.defaultText : fileName.value));
+			main.instance.LoadData((fileName.value == "" ? fileName.defaultText : fileName.value));
 			UpdateView();
 		}
 
 		void SetCurPlayer(long p) {
-			Cyclades.Game.Client.cur_player = p; 
+			Cyclades.Game.Client.Messanges.cur_player = p; 
 			for (int i = 0; i < buttons.Length; ++i) {
 				buttons[i].defaultColor = (i == (int)p ? Color.green : Color.red);
 				buttons[i].UpdateColor(true, true);

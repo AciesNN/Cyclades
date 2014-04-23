@@ -41,7 +41,7 @@ namespace Shmipl.GameScene
 		}
 
 		void Update_HornsObjects() {
-			List<long> horns = data.context.GetList<long>("/map/islands/horn");
+			List<long> horns = main.instance.context.GetList<long>("/map/islands/horn");
 			for(int ch = 0; ch < horns.Count; ++ch) {
 				horns_objects[ch].SetCount(horns[ch]);
 				horns_objects[ch].gameObject.SetActive(horns[ch] > 0);
@@ -49,26 +49,26 @@ namespace Shmipl.GameScene
 		}
 
 		void Update_WhoesObjects() {
-			List<long> owners = data.context.GetList<long>("/map/islands/owners");
-			List<long> army = data.context.GetList<long>("/map/islands/army");
+			List<long> owners = main.instance.context.GetList<long>("/map/islands/owners");
+			List<long> army = main.instance.context.GetList<long>("/map/islands/army");
 			for(int ch = 0; ch < owners.Count; ++ch) {
-				owners_objects[ch].renderer.material.color = data.GetColor(owners[ch]);
+				owners_objects[ch].renderer.material.color = main.instance.GetColor(owners[ch]);
 				owners_objects[ch].gameObject.SetActive(army[ch] == 0 && owners[ch] >= 0);
 			}
 		}
 
 		void Update_ArmyObjects() {
-			List<long> owners = data.context.GetList<long>("/map/islands/owners");
-			List<long> army = data.context.GetList<long>("/map/islands/army");
+			List<long> owners = main.instance.context.GetList<long>("/map/islands/owners");
+			List<long> army = main.instance.context.GetList<long>("/map/islands/army");
 			for(int ch = 0; ch < army.Count; ++ch) {
-				army_objects[ch].renderer.material.color = data.GetColor(owners[ch]);
+				army_objects[ch].renderer.material.color = main.instance.GetColor(owners[ch]);
 				army_objects[ch].SetCount(army[ch]);
 				army_objects[ch].gameObject.SetActive(army[ch] > 0);
 			}
 		}
 
 		void Update_BuildingsObjects() {
-			List<long> owners = data.context.GetList<long>("/map/islands/owners");
+			List<long> owners = main.instance.context.GetList<long>("/map/islands/owners");
 			for(int ch = 0; ch < owners.Count; ++ch) {
 				buildings_objects[ch].gameObject.SetActive(false);
 			}
@@ -137,9 +137,9 @@ namespace Shmipl.GameScene
 		}
 
 		void InitSeaHorns() {
-			Transform parent = terrain.transform;
+			UnityEngine.Transform parent = terrain.transform;
 
-			List<Coords> horns = data.context.GetListCoords("/map/seas/horns");
+			List<Coords> horns = main.instance.context.GetListCoords("/map/seas/horns");
 			int ch = 0;
 			foreach(Coords horn in horns) {
 				Vector3 horn_coord = grid.CellToWorldPositionOfCenter(CycladesCoordToCell(horn));
@@ -155,10 +155,10 @@ namespace Shmipl.GameScene
 		void InitIslandsObjects() {
 
 			//1. сначала создадим, куда засовывать создаваемые объекты
-			Transform parent = terrain.transform;
+			UnityEngine.Transform parent = terrain.transform;
 
 
-			List<object> islands = data.context.GetList("/map/islands/coords");
+			List<object> islands = main.instance.context.GetList("/map/islands/coords");
 
 			//2. создадим списки ссылок 
 			int l_lenght = islands.Count;
@@ -183,7 +183,7 @@ namespace Shmipl.GameScene
 			}
 		}
 
-		public MapObjectController CreateObject(GameObject prefab, Transform parent, string name, Coords coord, long count, float dx, float dy) {
+		public MapObjectController CreateObject(GameObject prefab, UnityEngine.Transform parent, string name, Coords coord, long count, float dx, float dy) {
 			Vector3 _coord = grid.CellToWorldPositionOfCenter(CycladesCoordToCell(coord));
 			Vector3 obj_coord3 = new Vector3(_coord.x + dx, mapObjectHeight, _coord.z + dy);			
 			GameObject go_ = GameObject.Instantiate(prefab, obj_coord3, Quaternion.identity) as GameObject;

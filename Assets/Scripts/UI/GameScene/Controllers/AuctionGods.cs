@@ -13,46 +13,46 @@ namespace Shmipl.GameScene
 
 		public override void UpdateView ()
 		{
-			long random_gods_number = data.context.Get<long> ("/players_number") - 1;
+			long random_gods_number = main.instance.context.Get<long> ("/players_number") - 1;
 			
 			ForEachChild<GodPanel> ((god, ch) => {
 				ch.gameObject.SetActive (god < random_gods_number); 
 
 				if (god < random_gods_number) {
 
-					ch.EnableBet = Client.cur_player != -1 && (god != Library.Auction_GetCurrentGodBetForPlayer(data.context, Client.cur_player)) && (Client.cur_player == Library.GetCurrentPlayer(data.context));
+					ch.EnableBet = Cyclades.Game.Client.Messanges.cur_player != -1 && (god != Library.Auction_GetCurrentGodBetForPlayer(main.instance.context, Cyclades.Game.Client.Messanges.cur_player)) && (Cyclades.Game.Client.Messanges.cur_player == Library.GetCurrentPlayer(main.instance.context));
 
-					ch.God = data.context.Get<string>("/auction/gods_order/[{0}]", god);
-					ch.Player = Library.Aiction_GetCurrentBetPlayerForGod(data.context, god);
+					ch.God = main.instance.context.Get<string>("/auction/gods_order/[{0}]", god);
+					ch.Player = Library.Aiction_GetCurrentBetPlayerForGod(main.instance.context, god);
 					if (god == activeGodIndex) {
 						ch.Bet = activeBet;
 					} else {
 						if(ch.Player >= 0)
-							ch.Bet = data.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
+							ch.Bet = main.instance.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
 						else
 							ch.Bet = 0;
 					}
 				
 					if (ch.EnableBet) {
 						if (ch.Player >= 0)
-							ch.MinBet = data.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
+							ch.MinBet = main.instance.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
 						else 
 							ch.MinBet = 0;
 
-						if (data.context.GetLong("/markers/gold/[{0}]", Client.cur_player) > 0)
-							ch.MaxBet = data.context.GetLong("/markers/gold/[{0}]", Client.cur_player) + data.context.GetLong("/markers/priest/[{0}]", Client.cur_player);
+						if (main.instance.context.GetLong("/markers/gold/[{0}]", Cyclades.Game.Client.Messanges.cur_player) > 0)
+							ch.MaxBet = main.instance.context.GetLong("/markers/gold/[{0}]", Cyclades.Game.Client.Messanges.cur_player) + main.instance.context.GetLong("/markers/priest/[{0}]", Cyclades.Game.Client.Messanges.cur_player);
 						else
 							ch.MaxBet = 0;
 					}
 				}
 			});	
 
-			AppolonWidget.EnableBet = (Client.cur_player == Library.GetCurrentPlayer(data.context));
+			AppolonWidget.EnableBet = (Cyclades.Game.Client.Messanges.cur_player == Library.GetCurrentPlayer(main.instance.context));
 			AppolonWidget.UpdateView();
 		}
 		
 		private void ConfirmBet(string god, long bet) {
-			Hashtable msg = Client.MakeBet(bet, god);
+			Hashtable msg = Cyclades.Game.Client.Messanges.MakeBet(bet, god);
 			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
 			ResetActiveGod();
 			UpdateView();

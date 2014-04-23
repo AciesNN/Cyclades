@@ -21,12 +21,12 @@ namespace Shmipl.GameScene
 		public GameObject [] panels;
 
 		public override void UpdateView () {
-			switch(Library.GetPhase(data.context)) {
+			switch(Library.GetPhase(main.instance.context)) {
 			case(Phase.AuctionPhase):
 				SetActivePanel((int) PanelIndex.Auction);
 				break;
 			case(Phase.TurnPhase):
-				string current_god = data.context.GetStr("/turn/current_god");
+				string current_god = main.instance.context.GetStr("/turn/current_god");
 				SetActivePanel(Constants.gods.IndexOf(current_god));
 				break;
 			}

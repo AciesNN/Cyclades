@@ -9,15 +9,15 @@ namespace Shmipl.GameScene
 	public class GodApollo : UIController {
 
 		public override void UpdateView () {
-			isEnabled = (Client.cur_player == Library.GetCurrentPlayer(data.context));
+			isEnabled = (Cyclades.Game.Client.Messanges.cur_player == Library.GetCurrentPlayer(main.instance.context));
 		}
 		
 		public void EndTurn() {
-			if (data.game.gameMode != GameMode.simple) {
+			if (main.instance.game.gameMode != GameMode.simple) {
 				Debug.Log ("NOT ENABLED"); //по идее, надо ограничивать доступность
 				return;
 			}
-			Hashtable msg = Client.EndPlayerTurn();
+			Hashtable msg = Cyclades.Game.Client.Messanges.EndPlayerTurn();
 			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
 		}
 
