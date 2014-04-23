@@ -28,6 +28,8 @@ namespace Shmipl.GameScene
 					//TODO!!! тут вот вообще нехорошо! убрать! пользуемся вредной функцией
 					return Cyclades.Program.srv.GetContext("Game");
 				}
+				if (Cyclades.Program.clnts[(int)Cyclades.Game.Client.Messanges.cur_player].GetContext("Game") == null)
+					return Cyclades.Program.srv.GetContext("Game"); //TODO - явная недоработка синхронизации!
 				return Cyclades.Program.clnts[(int)Cyclades.Game.Client.Messanges.cur_player].GetContext("Game");
 			}
 		}
