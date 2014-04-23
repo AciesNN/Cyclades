@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace Shmipl.Unity
@@ -35,7 +35,7 @@ namespace Shmipl.Unity
 		}
 
 		void Start() {
-			//UpdateButtons();
+			UpdateButtons();
 			//UpdateView();
 		}
 	}

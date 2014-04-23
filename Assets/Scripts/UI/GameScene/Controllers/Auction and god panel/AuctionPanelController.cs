@@ -30,7 +30,6 @@ namespace Shmipl.GameScene
 				SetActivePanel(Constants.gods.IndexOf(current_god));
 				break;
 			}
-
 		}
 
 		private void SetActivePanel (int index) {

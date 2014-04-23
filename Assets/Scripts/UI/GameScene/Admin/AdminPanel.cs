@@ -33,6 +33,7 @@ namespace Shmipl.GameScene
 
 		void DataLoad() {
 			main.instance.LoadData((fileName.value == "" ? fileName.defaultText : fileName.value));
+			main.instance.game.gameMode = GameMode.simple;
 			UpdateView();
 		}
 
@@ -42,6 +43,7 @@ namespace Shmipl.GameScene
 				buttons[i].defaultColor = (i == (int)p ? Color.green : Color.red);
 				buttons[i].UpdateColor(true, true);
 			}
+			main.instance.game.gameMode = GameMode.simple;
 			UpdateView();
 		}
 
