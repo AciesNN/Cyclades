@@ -32,14 +32,14 @@ namespace Shmipl.GameScene
 			}
 		}
 
-		void Start() {
+		void Awake() {
 			StartCoroutine(Shmipl.Base.ThreadSafeMessenger.ReceiveEvent());
 
 			Shmipl.Base.Messenger<string, Hashtable>.AddListener("Shmipl.DeserializeContext", OnContextDeserialize);
 			Shmipl.Base.Messenger<string, Hashtable>.AddListener("Shmipl.DoMacros", OnContextChanged);
 
 			Shmipl.Base.Log.PrintDebug = Debug.Log;
-			Cyclades.Program.project_path = @"D:\Acies\shmipl\pic2\cs\SevenUp\";	
+			Cyclades.Program.project_path = @"D:\Acies\shmipl\pic2\cs\Cyclades\";	
 			Cyclades.Program.Start();
 
 			LoadData("1");

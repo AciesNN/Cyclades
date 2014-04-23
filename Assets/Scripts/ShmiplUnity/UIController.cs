@@ -35,8 +35,8 @@ namespace Shmipl.Unity
 		}
 
 		void Start() {
-			UpdateButtons();
-			UpdateView();
+			//UpdateButtons();
+			//UpdateView();
 		}
 	}
 }

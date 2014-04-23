@@ -11,8 +11,6 @@ namespace Shmipl.GameScene
 		MapController mapController;
 
 		void Awake () {
-			Shmipl.Base.Messenger.AddListener("UnityShmipl.UpdateView", UpdateView);
-
 			//TODO это не должно быть тут
 			Application.LoadLevelAdditive("Map");
 		}
@@ -25,6 +23,8 @@ namespace Shmipl.GameScene
 
 			mapController = GameObject.FindObjectOfType<MapController>();
 			mapController.InitMap();
+
+			Shmipl.Base.Messenger.AddListener("UnityShmipl.UpdateView", UpdateView);
 		}
 
 		void UpdateView() {
