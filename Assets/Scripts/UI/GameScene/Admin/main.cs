@@ -39,12 +39,15 @@ namespace Shmipl.GameScene
 
 			Shmipl.Base.Messenger<string, Hashtable>.AddListener("Shmipl.DeserializeContext", OnContextDeserialize);
 			Shmipl.Base.Messenger<string, Hashtable>.AddListener("Shmipl.DoMacros", OnContextChanged);
+			Shmipl.Base.Messenger<Hashtable>.AddListener("Shmipl.Error", OnError);
+			Shmipl.Base.Messenger<string>.AddListener("Shmipl.AddContext", OnAddContext);
+			Shmipl.Base.Messenger<string>.AddListener("Shmipl.RemoveContext", OnRemoveContext);
 
 			Shmipl.Base.Log.PrintDebug = Debug.Log;
 			Cyclades.Program.project_path = @"D:\Acies\shmipl\pic2\cs\Cyclades\";	
 			Cyclades.Program.Start();
 
-			LoadData("1");
+			//LoadData("1");
 		}
 
 		public void LoadData(string name) {
@@ -58,18 +61,28 @@ namespace Shmipl.GameScene
 				return userColors[(int)user];
 		}
 
-		private void OnContextChanged(string context_name, Hashtable msg)
-		{
-			if (context_name == "Game") {
+		private void OnContextChanged(string context_name, Hashtable msg) {
+			if (context_name == "Game" && (long)msg["to"] == Cyclades.Game.Client.Messanges.cur_player) {
 				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
 			}
 		}
 		
-		private void OnContextDeserialize(string context_name, Hashtable msg)
-		{
-			if (context_name == "Game")	{
-
+		private void OnContextDeserialize(string context_name, Hashtable msg) {
+			if (context_name == "Game" && (long)msg["to"] == 0)	{
+				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
 			}
+		}
+
+		private void OnError(Hashtable msg) {
+			Debug.Log("\tERROR: " + Shmipl.Base.json.dumps(msg));
+		}
+
+		private void OnAddContext(string msg) {
+			Debug.Log("+FSM: " + msg);
+		}
+
+		private void OnRemoveContext(string msg) {
+			Debug.Log("-FSM: " + msg);
 		}
 	}
 }
