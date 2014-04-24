@@ -35,6 +35,8 @@ namespace Shmipl.GameScene
 		}
 
 		void Awake() {
+			//LoadData("1");
+
 			StartCoroutine(Shmipl.Base.ThreadSafeMessenger.ReceiveEvent());
 
 			Shmipl.Base.Messenger<string, Hashtable>.AddListener("Shmipl.DeserializeContext", OnContextDeserialize);
@@ -46,8 +48,6 @@ namespace Shmipl.GameScene
 			Shmipl.Base.Log.PrintDebug = Debug.Log;
 			Cyclades.Program.project_path = @"D:\Acies\shmipl\pic2\cs\Cyclades\";	
 			Cyclades.Program.Start();
-
-			//LoadData("1");
 		}
 
 		public void LoadData(string name) {
