@@ -63,12 +63,14 @@ namespace Shmipl.GameScene
 
 		private void OnContextChanged(string context_name, Hashtable msg) {
 			if (context_name == "Game" && (long)msg["to"] == Cyclades.Game.Client.Messanges.cur_player) {
+				Debug.Log("change: " + Shmipl.Base.json.dumps(msg));
 				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
 			}
 		}
 		
 		private void OnContextDeserialize(string context_name, Hashtable msg) {
 			if (context_name == "Game" && (long)msg["to"] == 0)	{
+				Debug.Log("load: " + Shmipl.Base.json.dumps(msg));
 				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
 			}
 		}
@@ -77,12 +79,12 @@ namespace Shmipl.GameScene
 			Debug.Log("\tERROR: " + Shmipl.Base.json.dumps(msg));
 		}
 
-		private void OnAddContext(string msg) {
-			Debug.Log("+FSM: " + msg);
+		private void OnAddContext(string fsm_name) {
+			Debug.Log("+FSM: " + fsm_name);
 		}
 
-		private void OnRemoveContext(string msg) {
-			Debug.Log("-FSM: " + msg);
+		private void OnRemoveContext(string fsm_name) {
+			Debug.Log("-FSM: " + fsm_name);
 		}
 
 		public void SendSrv(Hashtable msg) {
