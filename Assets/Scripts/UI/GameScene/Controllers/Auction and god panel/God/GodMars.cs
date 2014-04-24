@@ -20,8 +20,7 @@ namespace Shmipl.GameScene
 				Debug.Log ("NOT ENABLED"); //по идее, надо ограничивать доступность
 				return;
 			}
-			Hashtable msg = Cyclades.Game.Client.Messanges.EndPlayerTurn();
-			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.EndPlayerTurn() );
 		}
 
 		void BuyArmy() {

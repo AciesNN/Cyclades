@@ -52,8 +52,8 @@ namespace Shmipl.GameScene
 		}
 		
 		private void ConfirmBet(string god, long bet) {
-			Hashtable msg = Cyclades.Game.Client.Messanges.MakeBet(bet, god);
-			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.MakeBet(bet, god) );
+
 			ResetActiveGod();
 			UpdateView();
 		}

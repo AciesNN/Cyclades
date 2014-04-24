@@ -84,5 +84,10 @@ namespace Shmipl.GameScene
 		private void OnRemoveContext(string msg) {
 			Debug.Log("-FSM: " + msg);
 		}
+
+		public void SendSrv(Hashtable msg) {
+			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
+			Cyclades.Program.SendToSrv(msg);
+		}
 	}
 }
