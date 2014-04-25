@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Cyclades.Game;
+using Shmipl;
 
 namespace Shmipl.GameScene
 {
@@ -48,6 +49,10 @@ namespace Shmipl.GameScene
 			Shmipl.Base.Log.PrintDebug = Debug.Log;
 			Cyclades.Program.project_path = @"D:\Acies\shmipl\pic2\cs\Cyclades\";	
 			Cyclades.Program.Start();
+		}
+
+		void OnDestroy() {
+			Shmipl.Base.Log.close_all();
 		}
 
 		public void LoadData(string name) {
