@@ -40,11 +40,11 @@ namespace Shmipl.GameScene
 
 			StartCoroutine(Shmipl.Base.ThreadSafeMessenger.ReceiveEvent());
 
-			Shmipl.Base.Messenger<string, Hashtable>.AddListener("Shmipl.DeserializeContext", OnContextDeserialize);
-			Shmipl.Base.Messenger<string, Hashtable>.AddListener("Shmipl.DoMacros", OnContextChanged);
-			Shmipl.Base.Messenger<Hashtable>.AddListener("Shmipl.Error", OnError);
-			Shmipl.Base.Messenger<string>.AddListener("Shmipl.AddContext", OnAddContext);
-			Shmipl.Base.Messenger<string>.AddListener("Shmipl.RemoveContext", OnRemoveContext);
+			Shmipl.Base.Messenger<string, object, Hashtable>.AddListener("Shmipl.DeserializeContext", OnContextDeserialize);
+			Shmipl.Base.Messenger<string, object, Hashtable>.AddListener("Shmipl.DoMacros", OnContextChanged);
+			Shmipl.Base.Messenger<object, Hashtable>.AddListener("Shmipl.Error", OnError);
+			Shmipl.Base.Messenger<object, string>.AddListener("Shmipl.AddContext", OnAddContext);
+			Shmipl.Base.Messenger<object, string>.AddListener("Shmipl.RemoveContext", OnRemoveContext);
 
 			Shmipl.Base.Log.PrintDebug = Debug.Log;
 			Cyclades.Program.project_path = @"D:\Acies\shmipl\pic2\cs\Cyclades\";	
@@ -66,29 +66,29 @@ namespace Shmipl.GameScene
 				return userColors[(int)user];
 		}
 
-		private void OnContextChanged(string context_name, Hashtable msg) {
+		private void OnContextChanged(string context_name, object to, Hashtable msg) {
 			if (context_name == "Game" && (long)msg["to"] == Cyclades.Game.Client.Messanges.cur_player) {
 				Debug.Log("change: " + Shmipl.Base.json.dumps(msg));
 				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
 			}
 		}
 		
-		private void OnContextDeserialize(string context_name, Hashtable msg) {
+		private void OnContextDeserialize(string context_name, object to, Hashtable msg) {
 			if (context_name == "Game" && (long)msg["to"] == 0)	{
 				Debug.Log("load: " + Shmipl.Base.json.dumps(msg));
 				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
 			}
 		}
 
-		private void OnError(Hashtable msg) {
+		private void OnError(object to, Hashtable msg) {
 			Debug.Log("\tERROR: " + Shmipl.Base.json.dumps(msg));
 		}
 
-		private void OnAddContext(string fsm_name) {
+		private void OnAddContext(object to, string fsm_name) {
 			Debug.Log("+FSM: " + fsm_name);
 		}
 
-		private void OnRemoveContext(string fsm_name) {
+		private void OnRemoveContext(object to, string fsm_name) {
 			Debug.Log("-FSM: " + fsm_name);
 		}
 
