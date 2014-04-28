@@ -46,13 +46,10 @@ namespace Shmipl.GameScene
 		}
 		
 		void OnMapClick_Build(Coords coords) {
-			Hashtable 
-				msg = Cyclades.Game.Client.Messanges.BuyBuild();
-			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
-			
-			msg = Cyclades.Game.Client.Messanges.PlaceBuilding(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), 0);
-			Debug.Log ("msg: " + Shmipl.Base.json.dumps(msg));
-			
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyBuild() );
+
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceBuilding(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), 0) );
+
 			Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_Build);
 			main.instance.game.gameMode = GameMode.simple;
 		}

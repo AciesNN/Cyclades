@@ -73,24 +73,17 @@ namespace Shmipl.GameScene
 		}
 
 		void OnMapClick_Build(Coords coords) {
-			Hashtable 
-				msg = Cyclades.Game.Client.Messanges.BuyBuild();
-			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
-			
-			msg = Cyclades.Game.Client.Messanges.PlaceBuilding(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), 0);
-			Debug.Log ("msg: " + Shmipl.Base.json.dumps(msg));
-			
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyBuild() );
+
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceBuilding(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), 0) );
+
 			Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_Build);
 			main.instance.game.gameMode = GameMode.simple;
 		}
 
 		void OnMapClick_BuyArmy(Coords coords) {
-			Hashtable 
-				msg = Cyclades.Game.Client.Messanges.BuyArmy();
-			Debug.Log("msg: " + Shmipl.Base.json.dumps(msg));
-			
-			msg = Cyclades.Game.Client.Messanges.PlaceArmy(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y));
-			Debug.Log ("msg: " + Shmipl.Base.json.dumps(msg));
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyArmy() );
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceArmy(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y)) );
 			
 			Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_BuyArmy);
 			main.instance.game.gameMode = GameMode.simple;
@@ -103,11 +96,8 @@ namespace Shmipl.GameScene
 				move_army_from_coords = coords;
 				break;
 			case(GameMode.moveArmyTo):
-				Hashtable 
-				
-					msg = Cyclades.Game.Client.Messanges.MoveArmy(Library.Map_GetIslandByPoint(main.instance.context, move_army_from_coords.x, move_army_from_coords.y), Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), 1);
-				Debug.Log ("msg: " + Shmipl.Base.json.dumps(msg));
-				
+				main.instance.SendSrv( Cyclades.Game.Client.Messanges.MoveArmy(Library.Map_GetIslandByPoint(main.instance.context, move_army_from_coords.x, move_army_from_coords.y), Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), 1) );
+
 				Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_MoveArmy);
 				main.instance.game.gameMode = GameMode.simple;
 				break;
