@@ -34,7 +34,7 @@ namespace Shmipl.Unity
 			buttons = gameObject.GetComponentsInChildren<UIButton>();
 		}
 
-		void Start() {
+		void Awake() {
 			UpdateButtons();
 			//UpdateView();
 		}

@@ -57,6 +57,7 @@ namespace Shmipl.GameScene
 
 		public void LoadData(string name) {
 			Cyclades.Program.srv.GetContext("Game").LoadDataFromFile("Assets\\Data\\" + name + ".txt");
+			Cyclades.Program.CreateClients();
 		}
 
 		public Color GetColor(long user) {
