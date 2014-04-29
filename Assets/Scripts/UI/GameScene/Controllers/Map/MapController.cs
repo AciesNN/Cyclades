@@ -17,6 +17,7 @@ namespace Shmipl.GameScene
 		public GameObject objPrefab;
 		public GameObject hornPrefab;
 		public GameObject ownerPrefab;
+		public GameObject buildPrefab;
 
 		readonly float mapObjectHeight = 20.0f;
 
@@ -175,9 +176,9 @@ namespace Shmipl.GameScene
 
 				//на каждом острове создадим: рога, воинов, принадлежность, 
 				horns_objects[ch] = CreateObject(hornPrefab, parent, "horn " + ch, coord, 0, -10, -10);
-				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 0, -10, 10);
+				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 0, 10, -10);
 				owners_objects[ch] = CreateObject(ownerPrefab, parent, "owners " + ch, coord, 0, 10, -10);
-				buildings_objects[ch] = CreateObject(objPrefab, parent, "buildings " + ch, coord, 0, 10, 10);
+				buildings_objects[ch] = CreateObject(buildPrefab, parent, "buildings " + ch, coord, 0, -10, 10);
 
 				ch = ch + 1;
 			}
