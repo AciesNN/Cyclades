@@ -86,11 +86,13 @@ namespace Shmipl.GameScene
 		}
 
 		private void OnAddContext(object to, string fsm_name) {
-			Debug.Log("+FSM: " + fsm_name);
+			if ((long)to == 0)
+				Debug.Log("+FSM: " + fsm_name);
 		}
 
 		private void OnRemoveContext(object to, string fsm_name) {
-			Debug.Log("-FSM: " + fsm_name);
+			if ((long)to == 0)
+				Debug.Log("-FSM: " + fsm_name);
 		}
 
 		public void SendSrv(Hashtable msg) {
