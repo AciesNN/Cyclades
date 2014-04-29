@@ -29,7 +29,7 @@ namespace Shmipl.GameScene
 		}
 		
 		public void EnableBet_UpdateView() {
-			okButton.isEnabled = enableBet;
+			okButton.isEnabled = enableBet && (Bet < MaxBet) && (Bet > MinBet);
 		}
 
 		/* max bet */
