@@ -49,10 +49,26 @@ namespace Shmipl.GameScene
 			playerSprite.color = (activePlayer ? Color.green : Color.white);
 		}
 
+		/* Color */
+		private Color color;
+		public Color Color_ {
+			get { return color; }
+			set {
+				if (color != value) {
+					color = value;
+					Color_UpdateView();
+				}
+			}
+		}
+		
+		public void Color_UpdateView() {
+			playerSign.color = color;
+		}
+
 		/* Income */
 		public UILabel incomeView;
-		private long income;
-		public long Income {
+		private string income = "";
+		public string Income {
 			get { return income; }
 			set {
 				if (income != value) {

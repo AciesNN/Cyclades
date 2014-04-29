@@ -19,10 +19,14 @@ namespace Shmipl.GameScene
 
 				if (i < players_number && player_order.Count > 0) {
 					long player = player_order[i];
-					ch.Income = main.instance.context.GetLong ("/markers/income/[{0}]", player);
+					if (Cyclades.Game.Client.Messanges.cur_player == player) {
+						ch.Income = "" + main.instance.context.GetLong ("/markers/gold/[{0}]", player) + "/" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
+					} else {
+						ch.Income = "" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
+					}
 					ch.Priests = main.instance.context.GetLong ("/markers/priest/[{0}]", player);
 					ch.Philosophers = main.instance.context.GetLong ("/markers/philosopher/[{0}]", player);
-
+					ch.Color_ = main.instance.GetColor(i);
 					ch.Player = player;
 
 					ch.ActivePlayer = (Library.GetCurrentPlayer(main.instance.context) == player);
