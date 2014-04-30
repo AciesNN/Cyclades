@@ -16,6 +16,13 @@ namespace Shmipl.GameScene
 															Color.black,
 															Color.blue,
 															Color.yellow};
+		private static readonly Dictionary<string, Color> buildColors = new  Dictionary<string, Color>
+																{{Cyclades.Game.Constants.buildNone, Color.gray},
+																{Cyclades.Game.Constants.buildMarina, Color.blue},
+																{Cyclades.Game.Constants.buildFortres, Color.red},
+																{Cyclades.Game.Constants.buildUniver, Color.white},
+																{Cyclades.Game.Constants.buildTemple, Color.magenta}};
+
 
 		public main()	{
 			instance = this;
@@ -65,6 +72,10 @@ namespace Shmipl.GameScene
 				return Color.white;
 			else 
 				return userColors[(int)user];
+		}
+
+		public Color GetBuildColor(string build) {
+			return buildColors[build];
 		}
 
 		private void OnContextChanged(string context_name, object to, Hashtable msg) {

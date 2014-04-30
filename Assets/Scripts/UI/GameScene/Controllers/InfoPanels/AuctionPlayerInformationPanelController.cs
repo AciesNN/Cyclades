@@ -22,7 +22,7 @@ namespace Shmipl.GameScene
 					if (Cyclades.Game.Client.Messanges.cur_player == player) {
 						ch.Income = "" + main.instance.context.GetLong ("/markers/gold/[{0}]", player) + "/" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
 					} else {
-						ch.Income = "" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
+						ch.Income = "?/" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
 					}
 					ch.Priests = main.instance.context.GetLong ("/markers/priest/[{0}]", player);
 					ch.Philosophers = main.instance.context.GetLong ("/markers/philosopher/[{0}]", player);

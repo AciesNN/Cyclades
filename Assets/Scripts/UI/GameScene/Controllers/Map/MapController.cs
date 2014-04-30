@@ -23,7 +23,7 @@ namespace Shmipl.GameScene
 
 		MapObjectController[] horns_objects;
 		MapObjectController[] army_objects;
-		MapObjectController[] buildings_objects;
+		BuildingsSet[] buildings_objects;
 		MapObjectController[] owners_objects;
 
 		bool isInit = false;
@@ -69,9 +69,12 @@ namespace Shmipl.GameScene
 		}
 
 		void Update_BuildingsObjects() {
-			List<long> owners = main.instance.context.GetList<long>("/map/islands/owners");
-			for(int ch = 0; ch < owners.Count; ++ch) {
-				buildings_objects[ch].gameObject.SetActive(false);
+			List<object> buildings = main.instance.context.GetList("/map/islands/buildings");
+			List<bool> is_metro = main.instance.context.GetList<bool>("/map/islands/is_metro");
+
+			for(int ch = 0; ch < is_metro.Count; ++ch) {
+				List<object> cur_buildings = buildings[ch] as List<object>;
+				buildings_objects[ch].SetInfo(cur_buildings, is_metro[ch], Cyclades.Game.Library.Map_IslandMetroSize(ch));
 			}
 		}
 
@@ -165,7 +168,7 @@ namespace Shmipl.GameScene
 			int l_lenght = islands.Count;
 			horns_objects = new MapObjectController[l_lenght];
 			army_objects = new MapObjectController[l_lenght];
-			buildings_objects = new MapObjectController[l_lenght];
+			buildings_objects = new BuildingsSet[l_lenght];
 			owners_objects = new MapObjectController[l_lenght];
 
 			//2. теперь создадим
@@ -175,25 +178,22 @@ namespace Shmipl.GameScene
 				Coords coord = new Coords((long)((List<object>)island[0])[0], (long)((List<object>)island[0])[1]); //координаты первой точки каждого острова
 
 				//на каждом острове создадим: рога, воинов, принадлежность, 
-				horns_objects[ch] = CreateObject(hornPrefab, parent, "horn " + ch, coord, 0, -10, -10);
-				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 0, 10, -10);
-				owners_objects[ch] = CreateObject(ownerPrefab, parent, "owners " + ch, coord, 0, 10, -10);
-				buildings_objects[ch] = CreateObject(buildPrefab, parent, "buildings " + ch, coord, 0, -10, 10);
+				horns_objects[ch] = CreateObject(hornPrefab, parent, "horn " + ch, coord, -10, -10).GetComponent<MapObjectController>();
+				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 10, -10).GetComponent<MapObjectController>();
+				owners_objects[ch] = CreateObject(ownerPrefab, parent, "owners " + ch, coord, 10, -10).GetComponent<MapObjectController>();
+				buildings_objects[ch] = CreateObject(buildPrefab, parent, "buildings " + ch, coord, -10, 10).GetComponent<BuildingsSet>();
 
 				ch = ch + 1;
 			}
 		}
 
-		public MapObjectController CreateObject(GameObject prefab, UnityEngine.Transform parent, string name, Coords coord, long count, float dx, float dy) {
+		public GameObject CreateObject(GameObject prefab, UnityEngine.Transform parent, string name, Coords coord, float dx, float dy) {
 			Vector3 _coord = grid.CellToWorldPositionOfCenter(CycladesCoordToCell(coord));
 			Vector3 obj_coord3 = new Vector3(_coord.x + dx, mapObjectHeight, _coord.z + dy);			
-			GameObject go_ = GameObject.Instantiate(prefab, obj_coord3, Quaternion.identity) as GameObject;
-			go_.name = name;
-			go_.transform.parent = parent;
+			GameObject go = GameObject.Instantiate(prefab, obj_coord3, Quaternion.identity) as GameObject;
+			go.name = name;
+			go.transform.parent = parent;
 
-			MapObjectController go = go_.GetComponent<MapObjectController>();
-			go.SetCount(count);
-			
 			return go;
 		}
 	}
