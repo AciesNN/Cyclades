@@ -26,7 +26,7 @@ namespace Shmipl.GameScene
 					}
 					ch.Priests = main.instance.context.GetLong ("/markers/priest/[{0}]", player);
 					ch.Philosophers = main.instance.context.GetLong ("/markers/philosopher/[{0}]", player);
-					ch.Color_ = main.instance.GetColor(i);
+					ch.Color_ = main.instance.GetColor(player);
 					ch.Player = player;
 
 					ch.ActivePlayer = (Library.GetCurrentPlayer(main.instance.context) == player);

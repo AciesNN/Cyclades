@@ -22,14 +22,15 @@ namespace Shmipl.GameScene
 					buildingsSign[i].gameObject.SetActive(false);
 				} else {
 					buildingsSign[i].gameObject.SetActive(true);
-					buildingsSign[i].text = (string)buildings[i];
-					buildingsSign[i].color = main.instance.GetBuildColor((string)buildings[i]);
+					string bld = (string)buildings[i];
+					buildingsSign[i].text = (bld == "" ? "-" : bld);
+					buildingsSign[i].color = main.instance.GetBuildColor(bld);
 				}
 			}
 
 			if (isMetro) {
 				for (int t = 0; t < metroSize; ++t) {
-					buildingsSign[t].text = "M";
+					buildingsSign[t].text = "!!";
 					buildingsSign[t].color = Color.black;
 				}
 			}
