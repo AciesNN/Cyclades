@@ -22,7 +22,13 @@ namespace Shmipl.GameScene
 																{Cyclades.Game.Constants.buildFortres, Color.red},
 																{Cyclades.Game.Constants.buildUniver, Color.white},
 																{Cyclades.Game.Constants.buildTemple, Color.magenta}};
-
+		private static readonly Dictionary<string, Color> godColors = new  Dictionary<string, Color>
+																{{Cyclades.Game.Constants.godNone, Color.black},
+																	{Cyclades.Game.Constants.godPoseidon, Color.blue},
+																	{Cyclades.Game.Constants.godMars, Color.red},
+																	{Cyclades.Game.Constants.godSophia, Color.gray},
+																	{Cyclades.Game.Constants.godZeus, Color.magenta},
+																	{Cyclades.Game.Constants.godAppolon, Color.white}};
 
 		public main()	{
 			instance = this;
@@ -76,6 +82,10 @@ namespace Shmipl.GameScene
 
 		public Color GetBuildColor(string build) {
 			return buildColors[build];
+		}
+
+		public Color GetGodColor(string god) {
+			return godColors[god];
 		}
 
 		private void OnContextChanged(string context_name, object to, Hashtable msg) {

@@ -9,10 +9,13 @@ namespace Shmipl.GameScene
 {
 	public class AuctionPlayerInformationPanelController : UICollectionController
 	{		
+		static readonly Color colorNoneGod = Color.black;
+
 		public override void UpdateView ()
 		{
 			long players_number = main.instance.context.GetLong ("/players_number");
 			List<long> player_order = GetPlayerInformationOrder();
+			List<Color> player_gods_order = GetPlayerGodsInformationOrder(players_number);
 
 			ForEachChild<AuctionPlayerInformationController> ((i, ch) => {
 				ch.gameObject.SetActive (i < players_number);
@@ -30,6 +33,9 @@ namespace Shmipl.GameScene
 					ch.Player = player;
 
 					ch.ActivePlayer = (Library.GetCurrentPlayer(main.instance.context) == player);
+
+					ch.GodColor = player_gods_order[i];
+					ch.GodVisible = (player_gods_order[i] != colorNoneGod);
 				}
 			});
 		}
@@ -46,8 +52,40 @@ namespace Shmipl.GameScene
 				res.AddRange(main.instance.context.GetList<long>("/auction/player_order"));
 				return res;
 			} else {
-				return new List<long>();
+				return null;
 			}
+		}
+
+		private List<Color> GetPlayerGodsInformationOrder(long players_number) {
+			Cyclades.Game.Phase phase = Library.GetPhase(main.instance.context);
+			
+			if (phase == Phase.AuctionPhase) {
+				List<Color> res = new List<Color>();
+				for (int i = 0; i < players_number; ++i) {//набиваем результат черным цветом - знаком того, что это аукционный игрок
+					res.Add(colorNoneGod);
+				}
+				return res;
+			} else if (phase == Phase.TurnPhase) {
+				List<Color> res = new List<Color>();
+				res.Add(GetGodColorForPlayer(main.instance.context.Get<long>("/turn/current_player")));
+				List<long> players_order = main.instance.context.GetList<long>("/turn/player_order");
+				foreach(long pl in players_order)
+					res.Add(GetGodColorForPlayer(pl));
+				for (int i = res.Count; i < players_number; ++i) {//остаток набиваем результат черным цветом - знаком того, что это аукционный игрок
+					res.Add(colorNoneGod);
+				}
+				return res;
+			} else {
+				return null;
+			}
+		}
+
+		Color GetGodColorForPlayer(long player) {
+			return main.instance.GetGodColor(
+				Cyclades.Game.Library.Auction_GetGodByNumber(
+					main.instance.context,
+					Cyclades.Game.Library.Auction_GetCurrentGodBetForPlayer(main.instance.context, player))
+				);
 		}
 	}
 }

@@ -3,6 +3,8 @@ using System.Collections;
 
 using Shmipl.Unity;
 
+//TODO - подумать над идеей: отличие св-ва от значения соот-ещего виджета, особенно при а) изначальном создании, б) реинициализации
+//по идее, от этого должна спасать UpdateView, но не спасает (возможно, не вызывается родителем)
 namespace Shmipl.GameScene
 {
 	public class AuctionPlayerInformationController : UIController {
@@ -13,7 +15,43 @@ namespace Shmipl.GameScene
 			Income_UpdateView();
 			Priests_UpdateView();
 			Philosophers_UpdateView();
+
+			GodColor_UpdateView();
+			GodVisible_UpdateView();
 		}
+
+		/* God color*/
+		public UISprite godSprite;
+		private Color god_color;
+		public Color GodColor {
+			get { return god_color; }
+			set {
+				if (god_color != value) {
+					god_color = value;
+					GodColor_UpdateView();
+				}
+			}
+		}
+		
+		public void GodColor_UpdateView() {
+			godSprite.color = god_color;
+		}
+
+		private bool god_visible = true;
+		public bool GodVisible {
+			get { return god_visible; }
+			set {
+				if (god_visible != value) {
+					god_visible = value;
+					GodVisible_UpdateView();
+				}
+			}
+		}
+		
+		public void GodVisible_UpdateView() {
+			godSprite.gameObject.SetActive(god_visible);
+		}
+
 
 		/* Player */
 		public UILabel playerSign;

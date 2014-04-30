@@ -95,7 +95,7 @@ namespace Shmipl.GameScene
 		}
 		
 		public void Player_UpdateView() {
-			playerView.text = "" + player;
+			playerView.text = (player == -1 ? "" : "" + player);
 		}
 		
 		/* Bet */
