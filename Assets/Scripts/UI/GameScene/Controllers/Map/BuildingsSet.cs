@@ -10,6 +10,7 @@ namespace Shmipl.GameScene
 {
 	public class BuildingsSet : UIController {
 		public TextMesh[] buildingsSign;
+		public Coords coord;
 
 		void Awake() {
 			if (buildingsSign.Length != 4)
@@ -35,5 +36,16 @@ namespace Shmipl.GameScene
 				}
 			}
 		}
+
+		public void OnClick(GameObject go) {
+			long slot = GetSlotNumber(go) - 1;
+			Shmipl.Base.Messenger<Coords, long>.Broadcast("Shmipl.Map.ClickOnBuildSlot", coord, slot);
+		}
+
+		long GetSlotNumber(GameObject go) {
+			//TODO ужасный, и конечно временный способ узнать номер слота
+			return System.Convert.ToInt64(go.transform.parent.name);
+		}
+
 	}
 }

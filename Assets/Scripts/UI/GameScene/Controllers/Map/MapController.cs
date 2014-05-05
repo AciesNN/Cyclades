@@ -11,7 +11,6 @@ namespace Shmipl.GameScene
 	public class MapController : UIController {
 		Shmipl.Unity.GridController grid;
 		Terrain terrain;
-		public GameObject pr;
 		public Texture2D texture;
 
 		public GameObject objPrefab;
@@ -91,19 +90,27 @@ namespace Shmipl.GameScene
 			}
 		}
 
-		public void OnClick() {
-			//Debug.Log("OnClick");
+		public void OnClick() { //OnClick вызывается NGUI само, просто по имени
 			Vector3 pos;
-			if (grid.MousePointToColliderHitPosition(out pos)) {	//TODO вообще-то лучше что-нибудь универсальное клик/тач			
+			if (grid.MousePointToColliderHitPosition(out pos)) {
 				Vector2 cell = grid.WorldPositionToCell(pos);
 				Coords coords = CellToCycladesCoord(cell);
 
 				Shmipl.Base.Messenger<Coords>.Broadcast("Shmipl.Map.Click", coords);
-
-				//Debug.Log(coords);
-				//Vector3 cell_pos = grid.CellToWorldPositionOfCenter(cell);
-				//GameObject.Instantiate(pr, cell_pos, Quaternion.identity);
 			}
+
+			//можем еще обработать попадание не просто в карту, а в слоты зданий
+			//TODO - надо бы куда-нить перенести, и плюс - очень плохая связка с grid.камера
+			Ray ray = grid.mapCamera.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+			int mask = 1 << LayerMask.NameToLayer("MapObject");
+			
+			if (Physics.Raycast(ray, out hit, grid.mapCamera.farClipPlane, mask))	{
+				BuildingsSet buildingsSet = hit.collider.gameObject.transform.parent.parent.gameObject.GetComponent<BuildingsSet>();
+				if (buildingsSet) {
+					buildingsSet.OnClick(hit.collider.gameObject);
+				}
+			} 
 		}
 
 		Vector2 CycladesCoordToCell(Coords coords) {
@@ -172,7 +179,9 @@ namespace Shmipl.GameScene
 				horns_objects[ch] = CreateObject(hornPrefab, parent, "horn " + ch, coord, -10, -10).GetComponent<MapObjectController>();
 				army_objects[ch] = CreateObject(objPrefab, parent, "army " + ch, coord, 10, -10).GetComponent<MapObjectController>();
 				owners_objects[ch] = CreateObject(ownerPrefab, parent, "owners " + ch, coord, 10, -10).GetComponent<MapObjectController>();
+
 				buildings_objects[ch] = CreateObject(buildPrefab, parent, "buildings " + ch, coord, -10, 10).GetComponent<BuildingsSet>();
+				buildings_objects[ch].coord = coord;
 
 				ch = ch + 1;
 			}
