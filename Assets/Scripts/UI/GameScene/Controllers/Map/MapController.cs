@@ -25,6 +25,7 @@ namespace Shmipl.GameScene
 		MapObjectController[] army_objects;
 		BuildingsSet[] buildings_objects;
 		MapObjectController[] owners_objects;
+		Dictionary<Coords, MapObjectController> ship_objects;
 
 		bool isInit = false;
 
@@ -39,6 +40,7 @@ namespace Shmipl.GameScene
 			Update_ArmyObjects();
 			Update_HornsObjects();
 			Update_BuildingsObjects();
+			Update_ShipsObjects();
 		}
 
 		void Update_HornsObjects() {
@@ -75,6 +77,17 @@ namespace Shmipl.GameScene
 			for(int ch = 0; ch < is_metro.Count; ++ch) {
 				List<object> cur_buildings = buildings[ch] as List<object>;
 				buildings_objects[ch].SetInfo(cur_buildings, is_metro[ch], Cyclades.Game.Library.Map_IslandMetroSize(ch));
+			}
+		}
+
+		void Update_ShipsObjects() {
+			foreach(Coords coord in ship_objects.Keys) {
+				long owner = Cyclades.Game.Library.Map_GetPointOwner(main.instance.context, coord.x, coord.y);
+				long count = Cyclades.Game.Library.Map_GetShipCountByPoint(main.instance.context, coord.x, coord.y);
+
+				ship_objects[coord].renderer.material.color = main.instance.GetColor(owner);
+				ship_objects[coord].SetCount(count);
+				ship_objects[coord].gameObject.SetActive(count > 0);
 			}
 		}
 
@@ -133,45 +146,23 @@ namespace Shmipl.GameScene
 			Shmipl.Unity.TerrainHeightsLoader.LoadHeighMapFromTexture(texture, terrain);
 
 			//2. инициализируем начальные объекты: маркеры принадлежности островов, корабли, рога и т.д.
-			//...
-			InitSeaHorns();
-			InitIslandsObjects();
-
-			//
+			InitObjects();
 		}
 
-		void InitSeaHorns() {
+		void InitObjects() {
+
+			//- сначала создадим, куда засовывать создаваемые объекты
 			UnityEngine.Transform parent = terrain.transform;
 
-			List<Coords> horns = main.instance.context.GetListCoords("/map/seas/horns");
-			int ch = 0;
-			foreach(Coords horn in horns) {
-				Vector3 horn_coord = grid.CellToWorldPositionOfCenter(CycladesCoordToCell(horn));
-				Vector3 horn_coord3 = new Vector3(horn_coord.x, mapObjectHeight, horn_coord.z);
-				GameObject go = GameObject.Instantiate(hornPrefab, horn_coord3, Quaternion.identity) as GameObject;
-				go.transform.parent = parent;
-				go.name = "sea horn " + ch;
-
-				ch = ch + 1;
-			}
-		}
-
-		void InitIslandsObjects() {
-
-			//1. сначала создадим, куда засовывать создаваемые объекты
-			UnityEngine.Transform parent = terrain.transform;
-
-
+			//- создадим списки ссылок 
 			List<object> islands = main.instance.context.GetList("/map/islands/coords");
-
-			//2. создадим списки ссылок 
 			int l_lenght = islands.Count;
 			horns_objects = new MapObjectController[l_lenght];
 			army_objects = new MapObjectController[l_lenght];
 			buildings_objects = new BuildingsSet[l_lenght];
 			owners_objects = new MapObjectController[l_lenght];
 
-			//2. теперь создадим
+			//- теперь создадим
 			int ch = 0;
 			foreach(List<object> island in islands) {
 
@@ -184,6 +175,27 @@ namespace Shmipl.GameScene
 				buildings_objects[ch] = CreateObject(buildPrefab, parent, "buildings " + ch, coord, -10, 10).GetComponent<BuildingsSet>();
 
 				ch = ch + 1;
+			}
+
+			//- создадим корабли
+			ship_objects = new Dictionary<Coords, MapObjectController>();
+			long map_x = main.instance.context.GetLong ("/map/size_x");
+			long map_y = main.instance.context.GetLong ("/map/size_y");
+			long y_limit = Cyclades.Game.Library.Map_GetYLimit(map_y);
+			for (long y = 0; y < y_limit; ++y) {
+				long x_limit = Cyclades.Game.Library.Map_GetXLimit(map_x, map_y, y);
+				for (long x = 0; x < x_limit; ++x) {
+					if (Cyclades.Game.Library.Map_IsPointOnMap(main.instance.context, x, y)) {
+						Coords coord = new Coords(x, y);
+						ship_objects[coord] = CreateObject(objPrefab, parent, "ship " + x + " " + y, coord, 0, 0).GetComponent<MapObjectController>();
+					}
+				}
+			}
+
+			//- создадим морские рога (их мы не пишем ни в какие массивы, потому что они неизменны)
+			List<Coords> horns = main.instance.context.GetListCoords("/map/seas/horns");
+			foreach(Coords coord in horns) {
+				CreateObject(hornPrefab, parent, "sea horn " + coord.x + " " + coord.y, coord, 10, -10).GetComponent<MapObjectController>();
 			}
 		}
 
