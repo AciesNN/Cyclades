@@ -93,6 +93,9 @@ namespace Shmipl.GameScene
 			switch (main.instance.game.gameMode) {
 			case(GameMode.moveArmyFrom): 
 				main.instance.game.gameMode = GameMode.moveArmyTo;
+
+				ArmyCountDialog.ShowDilog();
+
 				move_army_from_coords = coords;
 				break;
 			case(GameMode.moveArmyTo):

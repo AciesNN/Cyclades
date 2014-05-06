@@ -21,8 +21,20 @@ namespace Shmipl.GameScene
 			main.instance.SendSrv( Cyclades.Game.Client.Messanges.EndPlayerTurn() );
 		}
 
-		void BuyNavy() {
-			//TODO
+		void BuyArmy() {
+			switch (main.instance.game.gameMode) {
+			case(GameMode.simple): 
+				Shmipl.Base.Messenger<Coords>.AddListener("Shmipl.Map.Click", OnMapClick_BuyNavy);
+				main.instance.game.gameMode = GameMode.buyNavy;
+				break;
+			case(GameMode.buyNavy):
+				Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_BuyNavy);
+				main.instance.game.gameMode = GameMode.simple;
+				break;
+			default:
+				Debug.Log ("NOT ENABLED"); //по идее, надо ограничивать доступность
+				return;
+			}
 		}
 
 		void StartMoveNavy() {
@@ -45,6 +57,14 @@ namespace Shmipl.GameScene
 			}
 		}
 		
+		void OnMapClick_BuyNavy(Coords coords) {
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyNavy() );
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceNavy(coords.x, coords.y) );
+			
+			Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_BuyNavy);
+			main.instance.game.gameMode = GameMode.simple;
+		}
+
 		void OnMapClick_Build(Coords coords, long slot) {
 			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyBuild() );
 			
