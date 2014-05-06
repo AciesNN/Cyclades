@@ -9,6 +9,8 @@ namespace Shmipl.GameScene
 		public UIInput fileName;
 		public UIButton[] buttons;
 		MapController mapController;
+		public UILabel gameModeLabel;
+		public UILabel curStateLabel;
 
 		void Awake () {
 			//TODO это не должно быть тут
@@ -25,6 +27,11 @@ namespace Shmipl.GameScene
 			mapController.InitMap();
 
 			Shmipl.Base.Messenger.AddListener("UnityShmipl.UpdateView", UpdateView);
+			Shmipl.Base.Messenger<GameMode>.AddListener("UnityShmipl.ChangeGameMode", ChangeGameMode);
+		}
+
+		void ChangeGameMode (GameMode gameMode) {
+			gameModeLabel.text = gameMode.ToString();
 		}
 
 		void UpdateView() {
@@ -37,6 +44,10 @@ namespace Shmipl.GameScene
 			main.instance.game.gameMode = GameMode.simple;
 			UpdateView();
 			main.instance.game.Update();
+
+			try {
+				curStateLabel.text = main.instance.context.GetStr("/cur_state");
+			} catch {}
 		}
 
 		void SetCurPlayer(long p) {

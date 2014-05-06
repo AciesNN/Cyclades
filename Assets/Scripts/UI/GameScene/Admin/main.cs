@@ -10,6 +10,7 @@ namespace Shmipl.GameScene
 	public class main: MonoBehaviour {
 		public readonly Shmipl.GameScene.GameController game;
 		public static main instance = null;
+
 		private static readonly List<Color> userColors = new List<Color> 
 															{Color.green,
 															Color.red,
@@ -86,6 +87,10 @@ namespace Shmipl.GameScene
 
 		public Color GetGodColor(string god) {
 			return godColors[god];
+		}
+
+		public void SetGameMode(GameMode gameMode) {
+			Shmipl.Base.Messenger<GameMode>.Broadcast("UnityShmipl.ChangeGameMode", gameMode);
 		}
 
 		private void OnContextChanged(string context_name, object to, Hashtable msg) {

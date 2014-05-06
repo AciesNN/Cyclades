@@ -24,16 +24,20 @@ namespace Shmipl.GameScene
 
 	public class GameController  {
 
-		public GameMode gameMode { get; set;}
-		//Shmipl.Base.FSM fsm;
+		GameMode gameMode_ = GameMode.simple;
+		public GameMode gameMode 
+		{ 
+			get {
+				return gameMode_;
+			}
 
-		public GameController() {
-			gameMode = GameMode.simple;
-			//fsm = new Shmipl.Base.FSM();
-
-			//fsm.AddStringToTable(
+			set {
+				gameMode_ = value;
+				main.instance.SetGameMode(gameMode_);
+			}
 		}
-		 
+
+
 		public void Update() {
 			if (main.instance.context.GetStr("/cur_state") == "Turn.PlaceMetroPhilosopher") {
 
