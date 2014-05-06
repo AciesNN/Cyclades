@@ -9,29 +9,42 @@ namespace Shmipl.GameScene
 {
 	public class ArmyCountDialog : MonoBehaviour {
 		public static ArmyCountDialog instance;
+		GodMars godMars;
+		public UILabel inputLabel;
 
-		public static void ShowDilog() {
+		public static void ShowDilog(GodMars godMars) {
 			if (!instance) {
 				instance = FindObjectOfType<ArmyCountDialog>();
 			}
-
-			instance.ShowDialog();
 		
+			instance.ShowDialog(godMars);
 		}
 
-		void ShowDialog() {
+		void ShowDialog(GodMars godMars) {
 			transform.position = Vector3.zero;
 			gameObject.SetActive(true);
+			this.godMars = godMars;
 		}
 
-		// Use this for initialization
-		void Start () {
-		
+		public static void CloseDilog() {
+			if (!instance) {
+				instance = FindObjectOfType<ArmyCountDialog>();
+			}
+			instance.CloseDialog();
 		}
-		
-		// Update is called once per frame
-		void Update () {
-		
+
+		void CloseDialog() {
+			gameObject.SetActive(false);
+		}
+
+		void PressCancel() {
+			Debug.Log ("cancel");
+			CloseDilog();
+		}
+
+		void PressOK() {
+			godMars.move_army_count = System.Convert.ToInt64(inputLabel.text);
+			CloseDilog();
 		}
 	}
 }

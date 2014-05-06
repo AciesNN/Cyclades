@@ -10,6 +10,7 @@ namespace Shmipl.GameScene
 	public class GodMars : UIController {
 
 		Coords move_army_from_coords; //для запоминания острова, с которого игрок хочет двинуть войска
+		public long move_army_count;
 
 		public override void UpdateView () {
 			isEnabled = (Cyclades.Game.Client.Messanges.cur_player == Library.GetCurrentPlayer(main.instance.context));
@@ -43,7 +44,7 @@ namespace Shmipl.GameScene
 			switch (main.instance.game.gameMode) {
 			case(GameMode.simple): 
 				Shmipl.Base.Messenger<Coords>.AddListener("Shmipl.Map.Click", OnMapClick_MoveArmy);
-				main.instance.game.gameMode = GameMode.buyArmy;
+				main.instance.game.gameMode = GameMode.moveArmyFrom;
 				break;
 			case(GameMode.moveArmyFrom):
 			case(GameMode.moveArmyTo):
@@ -92,14 +93,13 @@ namespace Shmipl.GameScene
 		void OnMapClick_MoveArmy(Coords coords) {
 			switch (main.instance.game.gameMode) {
 			case(GameMode.moveArmyFrom): 
+				ArmyCountDialog.ShowDilog(this);
+
 				main.instance.game.gameMode = GameMode.moveArmyTo;
-
-				ArmyCountDialog.ShowDilog();
-
 				move_army_from_coords = coords;
 				break;
 			case(GameMode.moveArmyTo):
-				main.instance.SendSrv( Cyclades.Game.Client.Messanges.MoveArmy(Library.Map_GetIslandByPoint(main.instance.context, move_army_from_coords.x, move_army_from_coords.y), Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), 1) );
+				main.instance.SendSrv( Cyclades.Game.Client.Messanges.MoveArmy(Library.Map_GetIslandByPoint(main.instance.context, move_army_from_coords.x, move_army_from_coords.y), Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), move_army_count) );
 
 				Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_MoveArmy);
 				main.instance.game.gameMode = GameMode.simple;
