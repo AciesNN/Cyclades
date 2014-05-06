@@ -21,7 +21,7 @@ namespace Shmipl.GameScene
 			main.instance.SendSrv( Cyclades.Game.Client.Messanges.EndPlayerTurn() );
 		}
 
-		void PlaceApollo() {
+		void PlaceHorn() {
 			switch (main.instance.game.gameMode) {
 			case(GameMode.simple): 
 				Shmipl.Base.Messenger<Coords>.AddListener("Shmipl.Map.Click", OnMapClick_PlaceHorn);
