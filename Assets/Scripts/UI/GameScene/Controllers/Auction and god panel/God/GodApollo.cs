@@ -3,6 +3,7 @@ using System.Collections;
 
 using Cyclades.Game;
 using Shmipl.Unity;
+using Shmipl.FrmWrk.Library;
 
 namespace Shmipl.GameScene
 {
@@ -21,7 +22,26 @@ namespace Shmipl.GameScene
 		}
 
 		void PlaceApollo() {
-			//TODO
+			switch (main.instance.game.gameMode) {
+			case(GameMode.simple): 
+				Shmipl.Base.Messenger<Coords>.AddListener("Shmipl.Map.Click", OnMapClick_PlaceHorn);
+				main.instance.game.gameMode = GameMode.placeHorn;
+				break;
+			case(GameMode.placeHorn):
+				Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_PlaceHorn);
+				main.instance.game.gameMode = GameMode.simple;
+				break;
+			default:
+				Debug.Log ("NOT ENABLED"); //по идее, надо ограничивать доступность
+				return;
+			}
+		}
+
+		void OnMapClick_PlaceHorn(Coords coords) {
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceHorn(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y)) );
+			
+			Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_PlaceHorn);
+			main.instance.game.gameMode = GameMode.simple;
 		}
 	}
 }

@@ -28,6 +28,7 @@ namespace Shmipl.GameScene
 		}
 
 		void UpdateView() {
+			main.instance.game.Update();
 			GetComponent<UICollectionController>().UpdateView();
 		}
 
@@ -35,6 +36,7 @@ namespace Shmipl.GameScene
 			main.instance.LoadData((fileName.value == "" ? fileName.defaultText : fileName.value));
 			main.instance.game.gameMode = GameMode.simple;
 			UpdateView();
+			main.instance.game.Update();
 		}
 
 		void SetCurPlayer(long p) {
@@ -45,6 +47,7 @@ namespace Shmipl.GameScene
 			}
 			main.instance.game.gameMode = GameMode.simple;
 			UpdateView();
+			main.instance.game.Update();
 		}
 
 		public void SetCurPlayer0() {
