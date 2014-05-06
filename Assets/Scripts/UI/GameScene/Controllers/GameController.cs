@@ -39,14 +39,14 @@ namespace Shmipl.GameScene
 
 
 		public void Update() {
-			if (main.instance.context.GetStr("/cur_state") == "Turn.PlaceMetroPhilosopher") {
+			if (main.instance.context.GetStr("/cur_state") == "Turn.PlaceMetroPhilosopher" && main.instance.game.gameMode != GameMode.placeMetro4Philosopher) {
 
 				main.instance.game.gameMode = GameMode.placeMetro4Philosopher;
 				Shmipl.Base.Messenger<Coords>.AddListener("Shmipl.Map.Click", OnMapClick_PlaceMetro4Philosopher);
 
 			}
 
-			if (main.instance.context.GetStr("/cur_state") == "Turn.Turn.PlaceMetroBuilding") {
+			if (main.instance.context.GetStr("/cur_state") == "Turn.Turn.PlaceMetroBuilding"  && main.instance.game.gameMode != GameMode.placeMetroBuilding) {
 				
 				main.instance.game.gameMode = GameMode.placeMetroBuilding;
 				Shmipl.Base.Messenger<Coords>.AddListener("Shmipl.Map.Click", OnMapClick_PlaceMetroBuilding);

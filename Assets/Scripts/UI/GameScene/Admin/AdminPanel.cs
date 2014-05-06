@@ -37,6 +37,12 @@ namespace Shmipl.GameScene
 		void UpdateView() {
 			main.instance.game.Update();
 			GetComponent<UICollectionController>().UpdateView();
+
+			try {
+				curStateLabel.text = main.instance.context.GetStr("/cur_state");
+			} catch {
+				curStateLabel.text = "<error>";
+			}
 		}
 
 		void DataLoad() {
@@ -44,10 +50,6 @@ namespace Shmipl.GameScene
 			main.instance.game.gameMode = GameMode.simple;
 			UpdateView();
 			main.instance.game.Update();
-
-			try {
-				curStateLabel.text = main.instance.context.GetStr("/cur_state");
-			} catch {}
 		}
 
 		void SetCurPlayer(long p) {
