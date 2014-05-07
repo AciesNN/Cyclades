@@ -75,7 +75,7 @@ namespace Shmipl.GameScene
 
 			for(int ch = 0; ch < is_metro.Count; ++ch) {
 				List<object> cur_buildings = buildings[ch] as List<object>;
-				buildings_objects[ch].SetInfo(cur_buildings, is_metro[ch], Cyclades.Game.Library.Map_IslandMetroSize(ch));
+				buildings_objects[ch].SetInfo(cur_buildings, is_metro[ch], Cyclades.Game.Library.Map_IslandMetroSize(main.instance.context, ch));
 			}
 		}
 
