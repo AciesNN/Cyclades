@@ -46,7 +46,7 @@ namespace Shmipl.GameScene
 
 			}
 
-			if (main.instance.context.GetStr("/cur_state") == "Turn.Turn.PlaceMetroBuilding"  && main.instance.game.gameMode != GameMode.placeMetroBuilding) {
+			if (main.instance.context.GetStr("/cur_state") == "Turn.PlaceMetroBuilding"  && main.instance.game.gameMode != GameMode.placeMetroBuilding) {
 				
 				main.instance.game.gameMode = GameMode.placeMetroBuilding;
 				Shmipl.Base.Messenger<Coords>.AddListener("Shmipl.Map.Click", OnMapClick_PlaceMetroBuilding);
