@@ -94,6 +94,7 @@ namespace Shmipl.GameScene
 			switch (main.instance.game.gameMode) {
 			case(GameMode.moveArmyFrom): 
 				ArmyCountDialog.ShowDilog(this);
+				ArmyCountDialog.SetValue( "" + main.instance.context.GetLong("/map/islands/army/[{0}]", Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y)) ); //TODO никак не учитывается, что можно попасть и в море
 
 				main.instance.game.gameMode = GameMode.moveArmyTo;
 				move_army_from_coords = coords;

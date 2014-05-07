@@ -11,38 +11,52 @@ namespace Shmipl.GameScene
 		public static NavyCountDialog instance;
 		GodPoseidon godPoseiden;
 		public UILabel inputLabel;
+		bool isActive = false;
+
+		void Awake() {
+			instance = FindObjectOfType<NavyCountDialog>();
+		}
 
 		public static void ShowDilog(GodPoseidon godPoseiden) {
-			if (!instance) {
-				instance = FindObjectOfType<NavyCountDialog>();
-			}
-		
 			instance.ShowDialog(godPoseiden);
 		}
 
+		public static void SetValue(string val) {
+			instance.inputLabel.text = val;
+		}
+
 		void ShowDialog(GodPoseidon godPoseiden) {
+			if (isActive)
+				return;
+			isActive = true;
+
 			transform.position = Vector3.zero;
 			gameObject.SetActive(true);
 			this.godPoseiden = godPoseiden;
 		}
 
 		public static void CloseDilog() {
-			if (!instance) {
-				instance = FindObjectOfType<NavyCountDialog>();
-			}
 			instance.CloseDialog();
 		}
 
 		void CloseDialog() {
+			isActive = false;
+
 			gameObject.SetActive(false);
 		}
 
 		void PressCancel() {
+			if (!isActive)
+				return;
+
 			Debug.Log ("cancel");
 			CloseDilog();
 		}
 
 		void PressOK() {
+			if (!isActive)
+				return;
+
 			godPoseiden.move_navy_count = System.Convert.ToInt64(inputLabel.text);
 			CloseDilog();
 		}

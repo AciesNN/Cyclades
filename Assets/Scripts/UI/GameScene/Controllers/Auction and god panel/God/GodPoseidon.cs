@@ -109,13 +109,14 @@ namespace Shmipl.GameScene
 
 		void OnMapClick_MoveNavy(Coords coords) {
 			switch (main.instance.game.gameMode) {
-			case(GameMode.moveArmyFrom): 
+			case(GameMode.moveNavyFrom): 
 				NavyCountDialog.ShowDilog(this);
-				
+				NavyCountDialog.SetValue( "" + Library.Map_GetShipCountByPoint(main.instance.context, coords.x, coords.y) ); 
+
 				main.instance.game.gameMode = GameMode.moveNavyTo;
 				move_navy_from_coords = coords;
 				break;
-			case(GameMode.moveArmyTo):
+			case(GameMode.moveNavyTo):
 				main.instance.SendSrv( Cyclades.Game.Client.Messanges.MoveNavy(move_navy_from_coords.x, move_navy_from_coords.y, coords.x, coords.y, move_navy_count) );
 				
 				Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_MoveNavy);
