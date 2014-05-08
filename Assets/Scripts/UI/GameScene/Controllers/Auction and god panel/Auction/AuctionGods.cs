@@ -24,14 +24,6 @@ namespace Shmipl.GameScene
 
 					ch.God = main.instance.context.Get<string>("/auction/gods_order/[{0}]", god);
 					ch.Player = Library.Aiction_GetCurrentBetPlayerForGod(main.instance.context, god);
-					if (god == activeGodIndex) {
-						ch.Bet = activeBet;
-					} else {
-						if(ch.Player >= 0)
-							ch.Bet = main.instance.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
-						else
-							ch.Bet = 0;
-					}
 				
 					if (ch.EnableBet) {
 						if (ch.Player >= 0)
@@ -43,6 +35,15 @@ namespace Shmipl.GameScene
 							ch.MaxBet = main.instance.context.GetLong("/markers/gold/[{0}]", Cyclades.Game.Client.Messanges.cur_player) + main.instance.context.GetLong("/markers/priest/[{0}]", Cyclades.Game.Client.Messanges.cur_player);
 						else
 							ch.MaxBet = 0;
+					}
+
+					if (god == activeGodIndex) {
+						ch.Bet = activeBet;
+					} else {
+						if(ch.Player >= 0)
+							ch.Bet = main.instance.context.GetLong("/auction/bets/[{0}]/[{1}]", god, ch.Player);
+						else
+							ch.Bet = 0;
 					}
 				}
 			});	

@@ -26,8 +26,13 @@ namespace Shmipl.GameScene
 			mapController = GameObject.FindObjectOfType<MapController>();
 			mapController.InitMap();
 
-			Shmipl.Base.Messenger.AddListener("UnityShmipl.UpdateView", UpdateView);
+			Shmipl.Base.Messenger.AddListener("UnityShmipl.UpdateView", UpdateViewOutside);
 			Shmipl.Base.Messenger<GameMode>.AddListener("UnityShmipl.ChangeGameMode", ChangeGameMode);
+		}
+
+		void UpdateViewOutside() {
+			SetCurPlayer(Cyclades.Game.Library.GetCurrentPlayer(main.instance.context), false);
+			UpdateView();
 		}
 
 		void ChangeGameMode (GameMode gameMode) {
@@ -35,6 +40,7 @@ namespace Shmipl.GameScene
 		}
 
 		void UpdateView() {
+
 			main.instance.game.Update();
 			GetComponent<UICollectionController>().UpdateView();
 
@@ -48,39 +54,41 @@ namespace Shmipl.GameScene
 		void DataLoad() {
 			main.instance.LoadData((fileName.value == "" ? fileName.defaultText : fileName.value));
 			main.instance.game.gameMode = GameMode.simple;
-			UpdateView();
 			main.instance.game.Update();
 		}
 
-		void SetCurPlayer(long p) {
+		void SetCurPlayer(long p, bool update) {
 			Cyclades.Game.Client.Messanges.cur_player = p; 
 			for (int i = 0; i < buttons.Length; ++i) {
 				buttons[i].defaultColor = (i == (int)p ? Color.green : Color.red);
 				buttons[i].UpdateColor(true, true);
 			}
-			main.instance.game.gameMode = GameMode.simple;
-			UpdateView();
-			main.instance.game.Update();
+
+			if (update) {
+				main.instance.game.gameMode = GameMode.simple;
+				UpdateView();
+				main.instance.game.Update();
+			}
 		}
 
 		public void SetCurPlayer0() {
-			SetCurPlayer(0);
+			SetCurPlayer(0, true);
 		}
 
 		public void SetCurPlayer1() {
-			SetCurPlayer(1);
+			SetCurPlayer(1, true);
 		}
 
 		public void SetCurPlayer2() {
-			SetCurPlayer(2);
+			SetCurPlayer(2, true);
 		}
 
 		public void SetCurPlayer3() {
-			SetCurPlayer(3);
+			SetCurPlayer(3, true);
 		}
 
 		public void SetCurPlayer4() {
-			SetCurPlayer(4);
+			SetCurPlayer(4, true);
 		}
 	}
 }

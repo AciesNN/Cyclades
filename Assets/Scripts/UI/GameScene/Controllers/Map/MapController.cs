@@ -191,10 +191,10 @@ namespace Shmipl.GameScene
 			long map_x = main.instance.context.GetLong ("/map/size_x");
 			long map_y = main.instance.context.GetLong ("/map/size_y");
 			long y_limit = Cyclades.Game.Library.Map_GetYLimit(map_y);
-			for (long y = 0; y < y_limit; ++y) {
+			for (long y = 0; y <= y_limit; ++y) {
 				long x_limit = Cyclades.Game.Library.Map_GetXLimit(map_x, map_y, y);
-				for (long x = 0; x < x_limit; ++x) {
-					if (Cyclades.Game.Library.Map_IsPointOnMap(main.instance.context, x, y)) {
+				for (long x = 0; x <= x_limit; ++x) {
+					if (Cyclades.Game.Library.Map_IsPointOnMap(main.instance.context, x, y) && Cyclades.Game.Library.Map_GetIslandByPoint(main.instance.context, x, y) == -1) {
 						Coords coord = new Coords(x, y);
 						ship_objects[coord] = CreateObject(objPrefab, parent, "ship " + x + " " + y, coord, 0, 0).GetComponent<MapObjectController>();
 					}

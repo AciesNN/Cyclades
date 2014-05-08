@@ -37,10 +37,8 @@ namespace Shmipl.GameScene
 		public long MaxBet {
 			get { return maxBet; }
 			set {
-				if (maxBet != value) {
-					maxBet = value;
-					MaxBet_UpdateView();
-				}
+				maxBet = value;
+				MaxBet_UpdateView();
 			}
 		}
 		
@@ -53,10 +51,8 @@ namespace Shmipl.GameScene
 		public long MinBet {
 			get { return minBet; }
 			set {
-				if (minBet != value) {
-					minBet = value;
-					MinBet_UpdateView();
-				}
+				minBet = value;
+				MinBet_UpdateView();
 			}
 		}
 		
