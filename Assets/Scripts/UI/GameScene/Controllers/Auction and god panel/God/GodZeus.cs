@@ -52,9 +52,7 @@ namespace Shmipl.GameScene
 		}
 
 		void OnMapClick_Build(Coords coords, long slot) {
-			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyBuild() );
-
-			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceBuilding(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), slot) );
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyBuild(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), slot) );
 
 			Shmipl.Base.Messenger<Coords, long>.RemoveListener("Shmipl.Map.ClickOnBuildSlot", OnMapClick_Build);
 			main.instance.game.gameMode = GameMode.simple;

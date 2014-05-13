@@ -55,6 +55,7 @@ namespace Shmipl.GameScene
 			main.instance.LoadData((fileName.value == "" ? fileName.defaultText : fileName.value));
 			main.instance.game.gameMode = GameMode.simple;
 			main.instance.game.Update();
+			UpdateView();
 		}
 
 		void SetCurPlayer(long p, bool update) {

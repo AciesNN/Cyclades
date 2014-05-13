@@ -74,17 +74,14 @@ namespace Shmipl.GameScene
 		}
 
 		void OnMapClick_Build(Coords coords, long slot) {
-			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyBuild() );
-
-			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceBuilding(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), slot) );
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyBuild(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y), slot) );
 
 			Shmipl.Base.Messenger<Coords, long>.RemoveListener("Shmipl.Map.ClickOnBuildSlot", OnMapClick_Build);
 			main.instance.game.gameMode = GameMode.simple;
 		}
 
 		void OnMapClick_BuyArmy(Coords coords) {
-			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyArmy() );
-			main.instance.SendSrv( Cyclades.Game.Client.Messanges.PlaceArmy(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y)) );
+			main.instance.SendSrv( Cyclades.Game.Client.Messanges.BuyArmy(Library.Map_GetIslandByPoint(main.instance.context, coords.x, coords.y)) );
 			
 			Shmipl.Base.Messenger<Coords>.RemoveListener("Shmipl.Map.Click", OnMapClick_BuyArmy);
 			main.instance.game.gameMode = GameMode.simple;
