@@ -21,6 +21,9 @@ namespace Shmipl.GameScene
 		public GameObject [] panels;
 
 		public override void UpdateView () {
+			if (!main.instance.isContextReady(main.instance.context)) 
+				return;
+
 			switch(Library.GetPhase(main.instance.context)) {
 			case(Phase.AuctionPhase):
 				SetActivePanel((int) PanelIndex.Auction);

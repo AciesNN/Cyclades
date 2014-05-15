@@ -13,6 +13,9 @@ namespace Shmipl.GameScene
 
 		public override void UpdateView ()
 		{
+			if (!main.instance.isContextReady(main.instance.context)) 
+				return;
+
 			long players_number = main.instance.context.GetLong ("/players_number");
 			List<long> player_order = GetPlayerInformationOrder();
 			List<Color> player_gods_order = GetPlayerGodsInformationOrder(players_number);

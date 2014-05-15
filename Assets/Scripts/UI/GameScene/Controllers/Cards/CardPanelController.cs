@@ -38,6 +38,9 @@ namespace Shmipl.GameScene
 		}
 
 		public override void UpdateView () {
+			if (!main.instance.isContextReady(main.instance.context)) 
+				return;
+
 			OpenCards_UpdateView();
 			if (Cyclades.Game.Client.Messanges.cur_player != Library.GetCurrentPlayer(main.instance.context))
 				isEnabled = false;

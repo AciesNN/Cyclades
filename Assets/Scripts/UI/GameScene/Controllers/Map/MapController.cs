@@ -35,6 +35,12 @@ namespace Shmipl.GameScene
 		}
 		
 		public override void UpdateView () {
+			if (!main.instance.isContextReady(main.instance.context)) 
+				return;
+
+			if (!isInit)
+				InitMap();
+
 			Update_WhoesObjects();
 			Update_ArmyObjects();
 			Update_HornsObjects();
@@ -144,6 +150,9 @@ namespace Shmipl.GameScene
 		}
 
 		public void InitMap() {
+			if (!main.instance.isContextReady(main.instance.context)) 
+				return;
+
 			if (isInit)
 				return;
 			isInit = true;
