@@ -45,6 +45,8 @@ namespace Shmipl.GameScene
 						else
 							ch.Bet = 0;
 					}
+
+					ch.EnableBet_UpdateView();
 				}
 			});	
 
