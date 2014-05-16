@@ -59,6 +59,9 @@ namespace Shmipl.GameScene
 		}
 
 		void SetCurPlayer(long p, bool update) {
+			if (p == -1 && !update)
+				return;
+			
 			Cyclades.Game.Client.Messanges.cur_player = p; 
 			for (int i = 0; i < buttons.Length; ++i) {
 				buttons[i].defaultColor = (i == (int)p ? Color.green : Color.red);

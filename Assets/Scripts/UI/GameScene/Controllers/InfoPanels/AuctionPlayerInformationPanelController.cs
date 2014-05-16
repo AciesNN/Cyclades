@@ -20,11 +20,17 @@ namespace Shmipl.GameScene
 			List<long> player_order = GetPlayerInformationOrder();
 			List<Color> player_gods_order = GetPlayerGodsInformationOrder(players_number);
 
+			if (player_order == null || player_gods_order == null)
+				return;
+
 			ForEachChild<AuctionPlayerInformationController> ((i, ch) => {
 				ch.gameObject.SetActive (i < players_number);
 
 				if (i < players_number && player_order.Count > 0) {
 					long player = player_order[i];
+					if (player == -1)
+						return;
+
 					if (Cyclades.Game.Client.Messanges.cur_player == player) {
 						ch.Income = "" + main.instance.context.GetLong ("/markers/gold/[{0}]", player) + "/" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
 					} else {
@@ -37,7 +43,11 @@ namespace Shmipl.GameScene
 
 					ch.ActivePlayer = (Library.GetCurrentPlayer(main.instance.context) == player);
 
-					ch.GodColor = player_gods_order[i];
+					try {
+						ch.GodColor = player_gods_order[i];
+					} catch (System.Exception ex) {
+						int a = 1;
+					}
 					ch.GodVisible = (player_gods_order[i] != colorNoneGod);
 				}
 			});
@@ -69,6 +79,8 @@ namespace Shmipl.GameScene
 				}
 				return res;
 			} else if (phase == Phase.TurnPhase) {
+				if (main.instance.context.Get<long>("/turn/current_player") == -1)
+					return null;
 				List<Color> res = new List<Color>();
 				res.Add(GetGodColorForPlayer(main.instance.context.Get<long>("/turn/current_player")));
 				List<long> players_order = main.instance.context.GetList<long>("/turn/player_order");

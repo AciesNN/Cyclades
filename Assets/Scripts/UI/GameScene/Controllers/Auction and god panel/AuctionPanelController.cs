@@ -30,7 +30,8 @@ namespace Shmipl.GameScene
 				break;
 			case(Phase.TurnPhase):
 				string current_god = main.instance.context.GetStr("/turn/current_god");
-				SetActivePanel(Constants.gods.IndexOf(current_god));
+				if (Constants.gods.IndexOf(current_god) != -1)
+					SetActivePanel(Constants.gods.IndexOf(current_god));
 				break;
 			}
 		}
