@@ -110,14 +110,14 @@ namespace Shmipl.GameScene
 		private void OnContextChanged(string context_name, object to, Hashtable msg) {
 			if (context_name == "Game" && (long)msg["to"] == Cyclades.Game.Client.Messanges.cur_player) {
 				Debug.Log("change: " + Shmipl.Base.json.dumps(msg));
-				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
+				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger<Hashtable, bool>.Broadcast("UnityShmipl.UpdateView", msg, false));
 			}
 		}
 		
 		private void OnContextDeserialize(string context_name, object to, Hashtable msg) {
 			if (context_name == "Game" && (long)msg["to"] == 0)	{
 				Debug.Log("load: " + Shmipl.Base.json.dumps(msg));
-				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger.Broadcast("UnityShmipl.UpdateView"));
+				Shmipl.Base.ThreadSafeMessenger.SendEvent(() => Shmipl.Base.Messenger<Hashtable, bool>.Broadcast("UnityShmipl.UpdateView", msg, true));
 			}
 		}
 

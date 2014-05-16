@@ -26,13 +26,22 @@ namespace Shmipl.GameScene
 			mapController = GameObject.FindObjectOfType<MapController>();
 			mapController.InitMap();
 
-			Shmipl.Base.Messenger.AddListener("UnityShmipl.UpdateView", UpdateViewOutside);
+			Shmipl.Base.Messenger<Hashtable, bool>.AddListener("UnityShmipl.UpdateView", UpdateViewOutside);
 			Shmipl.Base.Messenger<GameMode>.AddListener("UnityShmipl.ChangeGameMode", ChangeGameMode);
 		}
 
-		void UpdateViewOutside() {
-			SetCurPlayer(Cyclades.Game.Library.GetCurrentPlayer(main.instance.context), false);
-			UpdateView();
+		void UpdateViewOutside(Hashtable msg, bool deserialize) {
+			//будем обновлять в двух случаях: это десериализация, или это установка стабильного состояния 
+			if (deserialize
+				||
+			    //msg != null &&
+			    msg.ContainsKey("macros") && (string)msg["macros"] == "SET"
+			    && msg.ContainsKey("path") && (string)msg["path"] == "/cur_state"
+				&& msg.ContainsKey("stable") && (bool)msg["stable"])
+			{
+				SetCurPlayer(Cyclades.Game.Library.GetCurrentPlayer(main.instance.context), false);
+				UpdateView();
+			}
 		}
 
 		void ChangeGameMode (GameMode gameMode) {
@@ -40,11 +49,10 @@ namespace Shmipl.GameScene
 		}
 
 		void UpdateView() {
-
 			main.instance.game.Update();
 			lock(main.instance.context) {
 				GetComponent<UICollectionController>().UpdateView();
-			}
+			}	
 
 			try {
 				curStateLabel.text = main.instance.context.GetStr("/cur_state");
