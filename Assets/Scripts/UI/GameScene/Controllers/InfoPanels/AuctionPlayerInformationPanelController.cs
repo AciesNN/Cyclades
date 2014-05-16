@@ -43,11 +43,7 @@ namespace Shmipl.GameScene
 
 					ch.ActivePlayer = (Library.GetCurrentPlayer(main.instance.context) == player);
 
-					try {
-						ch.GodColor = player_gods_order[i];
-					} catch (System.Exception ex) {
-						int a = 1;
-					}
+					ch.GodColor = player_gods_order[i];
 					ch.GodVisible = (player_gods_order[i] != colorNoneGod);
 				}
 			});

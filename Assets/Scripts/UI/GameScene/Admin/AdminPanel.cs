@@ -42,7 +42,9 @@ namespace Shmipl.GameScene
 		void UpdateView() {
 
 			main.instance.game.Update();
-			GetComponent<UICollectionController>().UpdateView();
+			lock(main.instance.context) {
+				GetComponent<UICollectionController>().UpdateView();
+			}
 
 			try {
 				curStateLabel.text = main.instance.context.GetStr("/cur_state");
@@ -54,7 +56,6 @@ namespace Shmipl.GameScene
 		void DataLoad() {
 			main.instance.LoadData((fileName.value == "" ? fileName.defaultText : fileName.value));
 			main.instance.game.gameMode = GameMode.simple;
-			main.instance.game.Update();
 			UpdateView();
 		}
 
