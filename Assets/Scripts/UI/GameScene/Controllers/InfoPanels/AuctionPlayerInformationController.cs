@@ -8,7 +8,9 @@ using Shmipl.Unity;
 namespace Shmipl.GameScene
 {
 	public class AuctionPlayerInformationController : UIController {
-		
+
+		public GameObject changeAnim;
+
 		public override void UpdateView() {
 			Player_UpdateView();
 			ActivePlayer_UpdateView();
@@ -104,6 +106,22 @@ namespace Shmipl.GameScene
 		}
 
 		/* Income */
+		private long gold = 0;
+		public long Gold {
+			get { return gold; }
+			set {
+				if (gold != value) {
+					gold = value;
+					Gold_UpdateView();
+				}
+			}
+		}
+		
+		public void Gold_UpdateView() {
+			Instantiate(changeAnim, incomeView.transform.position, Quaternion.identity);
+		}
+
+
 		public UILabel incomeView;
 		private string income = "";
 		public string Income {

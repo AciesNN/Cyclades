@@ -31,11 +31,14 @@ namespace Shmipl.GameScene
 					if (player == -1)
 						return;
 
+					long gold = main.instance.context.GetLong ("/markers/income/[{0}]", player);
+					long income = main.instance.context.GetLong ("/markers/income/[{0}]", player);
 					if (Cyclades.Game.Client.Messanges.cur_player == player) {
-						ch.Income = "" + main.instance.context.GetLong ("/markers/gold/[{0}]", player) + "/" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
+						ch.Income = "" + gold + "/" + income;
 					} else {
-						ch.Income = "?/" + main.instance.context.GetLong ("/markers/income/[{0}]", player);
+						ch.Income = "?/" + income;
 					}
+					ch.Gold = gold;
 					ch.Priests = main.instance.context.GetLong ("/markers/priest/[{0}]", player);
 					ch.Philosophers = main.instance.context.GetLong ("/markers/philosopher/[{0}]", player);
 					ch.Color_ = main.instance.GetColor(player);
