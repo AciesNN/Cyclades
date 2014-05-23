@@ -9,7 +9,7 @@ namespace Shmipl.GameScene
 {
 	public class AuctionPlayerInformationController : UIController {
 
-		public GameObject changeAnim;
+		public UIWidget changeAnim;
 
 		public override void UpdateView() {
 			Player_UpdateView();
@@ -118,7 +118,14 @@ namespace Shmipl.GameScene
 		}
 		
 		public void Gold_UpdateView() {
-			Instantiate(changeAnim, incomeView.transform.position, Quaternion.identity);
+			UIWidget go = Instantiate(changeAnim, incomeView.transform.position, incomeView.transform.rotation) as UIWidget;
+			//incomeView
+			//go.transform.localScale = incomeView.transform.localScale;
+			go.transform.parent = main.instance.panel.transform;
+			go.transform.localScale = new Vector3(1, 1, 1);
+			/*go.transform.position = incomeView.transform.position;
+			go.transform.rotation = incomeView.transform.rotation;*/
+			//go.animation.Play();
 		}
 
 

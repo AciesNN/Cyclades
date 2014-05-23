@@ -8,6 +8,8 @@ using Shmipl;
 namespace Shmipl.GameScene
 {
 	public class main: MonoBehaviour {
+		public UIPanel panel;
+
 		public readonly Shmipl.GameScene.GameController game;
 		public static main instance = null;
 

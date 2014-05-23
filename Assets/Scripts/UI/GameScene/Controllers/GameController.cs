@@ -41,6 +41,10 @@ namespace Shmipl.GameScene
 
 
 		public void Update() {
+			string dt = Shmipl.Base.json.dumps(main.instance.context.data);
+			if (dt == "{}") {
+				int a = 1;
+			}
 			if (main.instance.context.GetStr("/cur_state") == "Turn.PlaceMetroPhilosopher" && main.instance.game.gameMode != GameMode.placeMetro4Philosopher) {
 
 				main.instance.game.gameMode = GameMode.placeMetro4Philosopher;

@@ -49,15 +49,15 @@ namespace Shmipl.GameScene
 		}
 
 		void UpdateView() {
-			main.instance.game.Update();
 			lock(main.instance.context) {
+				main.instance.game.Update();
 				GetComponent<UICollectionController>().UpdateView();
-			}	
 
-			try {
-				curStateLabel.text = main.instance.context.GetStr("/cur_state");
-			} catch {
-				curStateLabel.text = "<error>";
+				try {
+					curStateLabel.text = main.instance.context.GetStr("/cur_state");
+				} catch {
+					curStateLabel.text = "<error>";
+				}
 			}
 		}
 

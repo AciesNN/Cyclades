@@ -6,7 +6,7 @@ namespace Shmipl.Unity
 	public class Destroer : MonoBehaviour {
 
 		void DestroyObject() {
-			Destroy(gameObject);
+			//Destroy(gameObject);
 		}
 		
 	}
