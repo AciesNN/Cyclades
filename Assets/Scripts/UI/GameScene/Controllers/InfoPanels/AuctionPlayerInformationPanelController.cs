@@ -31,7 +31,7 @@ namespace Shmipl.GameScene
 					if (player == -1)
 						return;
 
-					long gold = main.instance.context.GetLong ("/markers/income/[{0}]", player);
+					long gold = main.instance.context.GetLong ("/markers/gold/[{0}]", player);
 					long income = main.instance.context.GetLong ("/markers/income/[{0}]", player);
 					if (Cyclades.Game.Client.Messanges.cur_player == player) {
 						ch.Income = "" + gold + "/" + income;
